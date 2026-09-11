@@ -188,7 +188,7 @@ struct AppSessionInjectionTests {
         #expect(settings.didOnboard)
     }
 
-    @Test func openingIntentionEditorBecomesRegularSoTheFieldCanType() {
+    @Test func openingMenuExtraBecomesRegularSoTheFieldCanType() {
         let activation = RecordingActivation()
         let session = makeSession(
             calendar: FakeCalendar(),
@@ -198,15 +198,15 @@ struct AppSessionInjectionTests {
         )
         session.finishOnboarding()
         let accessoryAfterOnboard = activation.accessoryCount
-        session.intentionEditorDidAppear()
-        #expect(session.isIntentionEditorOpen)
+        session.menuExtraDidAppear()
+        #expect(session.isMenuExtraOpen)
         #expect(activation.regularCount == 1)
-        session.intentionEditorDidDisappear()
-        #expect(session.isIntentionEditorOpen == false)
+        session.menuExtraDidDisappear()
+        #expect(session.isMenuExtraOpen == false)
         #expect(activation.accessoryCount == accessoryAfterOnboard + 1)
     }
 
-    @Test func closingIntentionEditorDoesNotHideLab() {
+    @Test func closingMenuExtraDoesNotHideLab() {
         let activation = RecordingActivation()
         let session = makeSession(
             calendar: FakeCalendar(),
@@ -217,8 +217,8 @@ struct AppSessionInjectionTests {
         session.finishOnboarding()
         session.labDidAppear()
         let accessoryBefore = activation.accessoryCount
-        session.intentionEditorDidAppear()
-        session.intentionEditorDidDisappear()
+        session.menuExtraDidAppear()
+        session.menuExtraDidDisappear()
         #expect(session.isLabOpen)
         #expect(activation.accessoryCount == accessoryBefore)
     }

@@ -3,6 +3,8 @@ import SwiftUI
 
 struct MenuBarView: View {
     @EnvironmentObject private var session: AppSession
+    @State private var intentionDraft = ""
+    @FocusState private var intentionFocused: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -22,46 +24,23 @@ struct MenuBarView: View {
                             .foregroundStyle(.orange)
                     }
                 }
-                Button {
-                    IntentionEditorWindow.present(session: session)
-                } label: {
-                    HStack {
-                        Text(session.intention.text.isEmpty ? "One thing not to forget" : session.intention.text)
-                            .foregroundStyle(session.intention.text.isEmpty ? .secondary : .primary)
-                            .lineLimit(2)
-                        Spacer(minLength: 0)
-                    }
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 7)
-                    .background(.quaternary.opacity(0.5), in: RoundedRectangle(cornerRadius: 6, style: .continuous))
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel("Edit today’s Keep")
-                .accessibilityValue(session.intention.text.isEmpty ? "Empty" : session.intention.text)
+                TextField("", text: $intentionDraft, prompt: Text("One thing not to forget"))
+                    .textFieldStyle(.roundedBorder)
+                    .focused($intentionFocused)
+                    .labelsHidden()
+                    .accessibilityLabel("Today’s Keep")
+                    .onSubmit { commitIntention() }
                 if session.intention.isStale {
                     Button("Keep it today") {
                         session.intention.markReviewedToday()
                     }
                 }
             }
+            .background(ExtraKeyAttempt())
 
             Divider()
 
             Toggle("Pause wallpaper", isOn: $session.userPaused)
-            Toggle(
-                "Pause in fullscreen",
-                isOn: Binding(
-                    get: { session.power.pauseWhenFullscreen },
-                    set: { session.setPauseWhenFullscreen($0) }
-                )
-            )
-            Toggle(
-                "Pause on Low Power Mode",
-                isOn: Binding(
-                    get: { session.power.pauseOnLowPower },
-                    set: { session.setPauseOnLowPower($0) }
-                )
-            )
 
             HStack {
                 SettingsLink {
@@ -77,6 +56,25 @@ struct MenuBarView: View {
         }
         .padding(16)
         .frame(width: 320)
+        .onAppear {
+            intentionDraft = session.intention.text
+            session.menuExtraDidAppear()
+            intentionFocused = true
+        }
+        .onDisappear {
+            commitIntention()
+            session.menuExtraDidDisappear()
+        }
+        .onChange(of: session.intention.text) { _, value in
+            if value != intentionDraft.trimmingCharacters(in: .whitespacesAndNewlines) {
+                intentionDraft = value
+            }
+        }
+    }
+
+    private func commitIntention() {
+        session.intention.set(intentionDraft)
+        intentionDraft = session.intention.text
     }
 
     @ViewBuilder
@@ -133,83 +131,23 @@ struct MenuBarLabel: View {
     }
 }
 
-/// MenuBarExtra windows cannot become key. Editing happens in this panel, which we own.
-@MainActor
-enum IntentionEditorWindow {
-    private static var panel: KeyableEditorPanel?
-    private static var closeObserver: NSObjectProtocol?
+/// Asks the extra window to take keys without swapping its class.
+private struct ExtraKeyAttempt: NSViewRepresentable {
+    func makeNSView(context: Context) -> NSView {
+        ExtraKeyAttemptView()
+    }
 
-    static func present(session: AppSession) {
-        if let panel {
-            session.intentionEditorDidAppear()
-            NSApp.setActivationPolicy(.regular)
-            panel.makeKeyAndOrderFront(nil)
+    func updateNSView(_ nsView: NSView, context: Context) {}
+}
+
+private final class ExtraKeyAttemptView: NSView {
+    override func viewDidMoveToWindow() {
+        super.viewDidMoveToWindow()
+        guard window != nil else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let window = self?.window else { return }
             NSApp.activate(ignoringOtherApps: true)
-            return
-        }
-        let root = IntentionEditorView(session: session)
-        let hosting = NSHostingController(rootView: root)
-        let panel = KeyableEditorPanel(contentViewController: hosting)
-        panel.title = "Today’s Keep"
-        panel.styleMask = [.titled, .closable]
-        panel.isReleasedWhenClosed = false
-        panel.setContentSize(NSSize(width: 380, height: 180))
-        panel.center()
-        closeObserver = NotificationCenter.default.addObserver(
-            forName: NSWindow.willCloseNotification,
-            object: panel,
-            queue: .main
-        ) { _ in
-            Task { @MainActor in
-                session.intentionEditorDidDisappear()
-                Self.panel = nil
-            }
-        }
-        session.intentionEditorDidAppear()
-        panel.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
-        Self.panel = panel
-    }
-
-    static func dismiss() {
-        panel?.close()
-    }
-}
-
-private final class KeyableEditorPanel: NSPanel {
-    override var canBecomeKey: Bool { true }
-    override var canBecomeMain: Bool { true }
-}
-
-private struct IntentionEditorView: View {
-    @ObservedObject var session: AppSession
-    @State private var draft = ""
-    @FocusState private var fieldFocused: Bool
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            Text("Today’s Keep")
-                .font(.system(size: 13, weight: .medium))
-            TextField("One thing not to forget", text: $draft)
-                .textFieldStyle(.roundedBorder)
-                .focused($fieldFocused)
-                .accessibilityLabel("Today’s Keep")
-                .onSubmit { session.intention.set(draft) }
-            HStack {
-                Button("Cancel") {
-                    IntentionEditorWindow.dismiss()
-                }
-                .keyboardShortcut(.cancelAction)
-                Spacer()
-                Button("Save") { session.intention.set(draft) }
-                    .keyboardShortcut(.defaultAction)
-            }
-        }
-        .padding(16)
-        .frame(minWidth: 340)
-        .onAppear {
-            draft = session.intention.text
-            fieldFocused = true
+            window.makeKeyAndOrderFront(nil)
         }
     }
 }

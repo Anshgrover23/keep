@@ -24,7 +24,7 @@ final class AppSession: ObservableObject {
     @Published var memoryOverride: MemoryItem?
     @Published var hideMemory = false
     @Published private(set) var isLabOpen = false
-    @Published private(set) var isIntentionEditorOpen = false
+    @Published private(set) var isMenuExtraOpen = false
     @Published private(set) var isOnboardingOpen = false
     @Published var pinnedClockLabel: String?
 
@@ -210,14 +210,14 @@ final class AppSession: ObservableObject {
         restoreAccessoryIfIdle()
     }
 
-    /// MenuBarExtra cannot take keys. The intention editor is a real NSPanel.
-    func intentionEditorDidAppear() {
-        isIntentionEditorOpen = true
+    /// Window style extra can take keys only while Keep is regular. No class swap on SwiftUI’s extra window.
+    func menuExtraDidAppear() {
+        isMenuExtraOpen = true
         activation.becomeRegular()
     }
 
-    func intentionEditorDidDisappear() {
-        isIntentionEditorOpen = false
+    func menuExtraDidDisappear() {
+        isMenuExtraOpen = false
         restoreAccessoryIfIdle()
     }
 
@@ -232,7 +232,7 @@ final class AppSession: ObservableObject {
     }
 
     func restoreAccessoryIfIdle() {
-        if !isLabOpen, !isIntentionEditorOpen, !isOnboardingOpen {
+        if !isLabOpen, !isMenuExtraOpen, !isOnboardingOpen {
             activation.becomeAccessory()
         }
     }

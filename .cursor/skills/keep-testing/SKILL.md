@@ -40,7 +40,7 @@ Do not add test-only methods to production types unless Lab is the harness (`fai
 * True fullscreen vs maximized
 * Hidden wallpaper: display link **detached**
 * Inactive accessory application: extra and wallpaper still correct
-* Accessibility: VO labels, Reduce Motion, intention panel key
+* Accessibility: VO labels, Reduce Motion, extra field keys
 * Release build: compiles; do not skip Debug tests
 
 YAGNI on Lab chrome: one control per class of cases. Clock: midnight and noon or a phase picker. Weather: live, kind, fail next. Calendar: soon, overdue, all day, then live.

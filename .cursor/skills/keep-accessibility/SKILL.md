@@ -2,16 +2,16 @@
 name: keep-accessibility
 description: >-
   Keep accessibility: VoiceOver labels, Settings and onboarding navigation,
-  keyboard focus, IntentionEditorWindow, Reduce Motion, menu bar interaction.
-  Use when changing extra, overlay, Settings, onboarding, or the intention
-  panel. Do not use typing into MenuBarExtra as proof of keyboard behavior.
+  keyboard focus, extra TextField, Reduce Motion, menu bar interaction.
+  Use when changing extra, overlay, Settings, or onboarding.
+  Lab typing proof is the extra field, not a unit test.
 ---
 
 # Keep accessibility
 
 Accessibility is a product requirement (`keep-product`), not a polish pass.
 
-> Do not use typing into `MenuBarExtra` as proof of keyboard behavior. The editor window owns text input.
+> Lab typing proof is the extra field on the real menu extra.
 
 ## Surfaces
 
@@ -21,7 +21,7 @@ Accessibility is a product requirement (`keep-product`), not a polish pass.
 | Menu extra | Buttons and toggles have labels that name the job. Glance status is readable. |
 | Settings | Full keyboard navigation. Grants are invitational (`prose-copy`). |
 | Onboarding | Intention required field is reachable. Optional calendar and location are not focus traps. |
-| `IntentionEditorWindow` | Becomes key. Typing, cancel, save. This is the text input Lab. |
+| Extra field | Today’s Keep. Becomes regular while the extra is open. Return commits. Closing the extra commits. This is the text input Lab. |
 
 ## Reduce Motion
 
@@ -36,9 +36,9 @@ If Reduce Motion is on, do not add extra scene thrash to “prove” the wallpap
 
 ## Keyboard
 
-* Extra `.window` is for display. Do not isa-swap it to steal first responder.
+* Extra `.window` hosts today’s Keep. Activate while it is open. Do not isa-swap it.
 * Tab order in Settings and onboarding must hit every control that a pointer can hit.
-* Escape closes the intention panel without saving if that is current behavior; do not “improve” by changing save semantics unless asked.
+* Closing the extra commits today’s Keep.
 
 ## Menu bar
 

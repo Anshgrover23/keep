@@ -64,7 +64,7 @@ Hallmark, design-taste, Firecrawl, Hyperframes, Screenpipe, WeatherKit, MapKit U
 2. Settings schema version on AppSettings. Unit missing keys and unknown version.
 3. CI: derivedDataPath plus Release compile without shipping.
 4. Energy Lab on the wallpaper `NSWindow` (Instruments). Policy already detaches on hide.
-5. VoiceOver on extra and Settings. Do not type in MenuBarExtra.
+5. VoiceOver on extra and Settings. Extra field is today’s Keep.
 6. Choose Mac App Store or Developer ID plus notary. Then signing skill. Sparkle separate.
 7. Crash/version policy after a channel exists.
 

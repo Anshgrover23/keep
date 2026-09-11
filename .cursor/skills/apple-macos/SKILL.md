@@ -28,7 +28,7 @@ Index of packages: [sources.md](sources.md).
 
 * `LSUIElement` is the contract: menu bar agent, Quit, Settings, Lab. Not `LSBackgroundOnly`.
 * Do not flip `NSApplication.activationPolicy` on every extra frame.
-* Wallpaper windows are not key. `IntentionEditorWindow` becomes regular while open.
+* Wallpaper windows are not key. While the extra is open Keep becomes regular so the extra field can take keys. Do not `object_setClass` the extra window.
 
 ## Shell choice (menu extra)
 
@@ -38,11 +38,11 @@ From [zhutao100/macos-menubar-app-dev-skill](https://github.com/zhutao100/macos-
 | --- | --- |
 | Toggles and buttons only | `MenuBarExtra` `.menu` |
 | Glance panel (Keep extra) | `MenuBarExtra` `.window` is fine for **display** |
-| Typing, first responder, left vs right click, hotkeys | `NSStatusItem` and `NSPopover` or a Keep owned `NSPanel` |
+| Typing in the extra | `MenuBarExtra` `.window` plus regular activation while it is open. `makeKeyAndOrderFront` only. Never `object_setClass`. |
 
-Keep today: extra is `.window` for glance. **Today’s Keep** edits in `IntentionEditorWindow` (`NSPanel` we own). Do not `object_setClass` SwiftUI’s extra window. That crashed in `WindowMenuBarExtraBehavior.configuration.setter`.
+Keep today: extra is `.window` for glance and today’s Keep. That class swap crashed in `WindowMenuBarExtraBehavior.configuration.setter`.
 
-> Do not use typing into `MenuBarExtra` as proof of keyboard behavior. The editor window owns text input.
+> Lab typing proof is the extra field on the real menu extra, not a unit test.
 
 AvdLee `macos-scenes` prefers `MenuBarExtra` over `NSStatusItem`. True for simple menus. Keep already hit the exception: focusable fields. Do not rewrite the extra to `NSStatusItem` unless the user asked.
 
@@ -56,7 +56,7 @@ Do not add `SMAppService` launch at login because a menubar skill scaffolds it.
 * Per display lifecycle: rebuild on screen change; occupancy and true fullscreen classified per display; own PID ignored.
 * Sleep and lock: `PowerMonitor` notifications. Treat as separate reasons.
 
-[ckorhonen macos-apps](https://github.com/ckorhonen/claude-skills/blob/main/skills/macos-apps/references/swiftui-patterns.md): if SwiftUI hosts the window, do not fight it with more AppKit. If **we** created the `NSWindow`, AppKit is the owner. Wallpaper and intention panel are ours. Menu extra is SwiftUI’s.
+[ckorhonen macos-apps](https://github.com/ckorhonen/claude-skills/blob/main/skills/macos-apps/references/swiftui-patterns.md): if SwiftUI hosts the window, do not fight it with more AppKit. If **we** created the `NSWindow`, AppKit is the owner. Wallpaper is ours. Menu extra is SwiftUI’s.
 
 Do not use `TimelineView` for desktop particles. Do not use SpriteKit `SKView` (pauses when inactive).
 

@@ -89,7 +89,7 @@ Apple documentation wins for API semantics. Keep's product contract wins for pro
 * WeatherKit, EventKitUI, MapKit UI, WidgetKit, SwiftData, CloudKit, TCA, Alamofire.
 * `AtmosphereEngine` or a new store as cleanup.
 * Liquid Glass wallpaper, SpriteKit `SKView`, `TimelineView` particles.
-* Typing proof via `MenuBarExtra`.
+* Treating a unit test as extra typing proof.
 * iOS `NavigationStack` as app chrome.
 * Installing Axiom’s full suite “for production.”
 

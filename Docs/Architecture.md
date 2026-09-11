@@ -77,7 +77,7 @@ CoreLocation stays in `LocationProvider`. Solar math takes a `SolarObserver` and
 | Situation | Display link | Window |
 | --- | --- | --- |
 | Visible, session running | `NSWindow.displayLink`, not paused | ordered in |
-| Visible, paused (user / lock / sleep / LPM / true fullscreen on that display) | attached, paused | stays ordered in |
+| Visible, paused (user / lock / sleep; fullscreen or Low Power Mode only if Settings opt in) | attached, paused | stays ordered in |
 | Hidden (Lab toggle) or display gone | **detached** (invalidated) | `orderOut` |
 | App accessory / inactive | no extra pause; `hidesOnDeactivate` is false | stays under icons |
 | Screen parameters change | rebuild windows; leftover displays detach | Lab/system passed 11 Sep 2026 |
@@ -97,13 +97,13 @@ There is no public “any app is fullscreen” API. Keep classifies layer 0 wind
 | Keep Lab / our PID | ignored | never counts as covering |
 | Other display | classified independently | only the covered display pauses |
 
-Lock/sleep/LPM still pause every display. Simulated fullscreen pauses every display (Lab). If menu bar and Dock are hidden, `visibleFrame` can equal `frame` and maximized is indistinguishable from fullscreen.
+Lock and sleep pause every display. Low Power Mode and true fullscreen do not, unless Settings opt in. Simulated fullscreen pauses every display (Lab). If menu bar and Dock are hidden, `visibleFrame` can equal `frame` and maximized is indistinguishable from fullscreen.
 
-**Evidence (11 Sep 2026):** Lab passed on the wallpaper window: Safari native Full Screen pauses that display; zoomed/Fill does not; Keep Lab does not count as covering; fullscreen on one display leaves the other display’s wallpaper running.
+**Evidence (11 Sep 2026):** Lab passed on the wallpaper window: zoomed/Fill does not pause; Keep Lab does not count as covering. Native Full Screen pauses that display only when Pause in fullscreen is on.
 
 ## Menu extra keyboard
 
-Keep launches as `LSUIElement` (accessory). SwiftUI `MenuBarExtra` windows cannot become key. Do not change that window’s class. Today’s Keep is edited in a Keep owned `NSPanel` (`IntentionEditorWindow`). That panel becomes regular while open.
+Keep launches as `LSUIElement` (accessory). Today’s Keep is a field in the window style extra. While the extra is open Keep becomes regular and asks that window to take keys. Do not change the extra window’s class. That swap crashed in `WindowMenuBarExtraBehavior.configuration.setter`. Closing the extra writes the intention.
 
 ## Logging
 
@@ -131,7 +131,7 @@ Lab Status uses Granted or Off for calendar and reminders. Product extra uses in
 * Hide detached the desktop display link; show attached it again.
 * Lock, sleep, and wake stayed separate. Wake did not clear a lock that was still asserted.
 * Safari true Full Screen paused that display. Maximized did not. Keep Lab was ignored. Another display stayed independent.
-* Extra typing used `IntentionEditorWindow` and took keys.
+* Extra typing is the extra field. Lab on that extra is still required.
 * First run: intention required; calendar and location optional; invitational copy.
 
 Keep runs as a menu bar agent with wallpaper beneath Finder, atmosphere driven by solar state and weather, calendar glance, graceful weather and location denial, pause behavior, per display fullscreen handling, and production Settings and first run.
@@ -170,7 +170,7 @@ Tests are grouped by what can go wrong, not by how many `@Test`s exist. Lab/syst
 | Sleep vs lock; wake does not clear lock | Unit and Lab 11 Sep 2026 | `WallpaperLifecycleTests`, `FailureModeTests` |
 | Hide wallpaper / display loss | Unit and Lab 11 Sep 2026 | `WallpaperLifecycleTests` |
 | True FS vs maximized vs Lab vs other display | Unit and Lab 11 Sep 2026 | `FullscreenClassificationTests` |
-| Extra typing vs MenuBarExtra | Lab 11 Sep 2026 | `IntentionEditorWindow` |
+| Extra typing vs MenuBarExtra | Implemented in extra field. Lab on the extra still required. | `MenuBarView` |
 | First run optional grants | Lab 11 Sep 2026 | onboarding |
 | Settings missing keys / relaunch persistence | Unit | `FailureModeTests` |
 | Process death | Not simulated beyond new `AppSettings`/`AppSession` on the same suite | `FailureModeTests` |

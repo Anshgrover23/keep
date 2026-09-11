@@ -19,10 +19,9 @@ Glance job: **atmosphere, next event, Keep.** The desktop remembers. It is not a
 | Surface | Role |
 | --- | --- |
 | Wallpaper | Primary product. AppKit `NSWindow` under Finder icons. Living sky plus at most two memory lines. |
-| Menu bar extra | Control and status. Glance, pause, Settings, Lab, Quit. Not a document window. |
+| Menu bar extra | Control and status. Glance, today’s Keep field, pause, Settings, Lab, Quit. Store and edit the intention here. |
 | Settings and onboarding | Supporting. Grants, wallpaper toggle, first run. |
 | Lab | Drive and break the **same** production path. Not a second weather client. Not golden test labels on buttons. |
-| `IntentionEditorWindow` | Typing today’s Keep. Do not type in `MenuBarExtra`. |
 
 Avoid web app UI conventions in the Mac app: no dashboard cards, no marketing hero, no “Get started” wizard chrome, no Hallmark layouts.
 
@@ -30,9 +29,9 @@ Avoid web app UI conventions in the Mac app: no dashboard cards, no marketing he
 
 * Living Day: sky from solar time or GPS elevation; weather from Open Meteo.
 * Ambient Memory: at most two lines. Next calendar item (or due reminder) and today’s Keep.
-* Menu extra agent (`LSUIElement`): glance, pause, Settings, Lab, Quit.
+* Menu extra agent (`LSUIElement`): glance, today’s Keep, pause, Settings, Lab, Quit.
 * First run: intention required. Calendar and location optional, as two actions.
-* Pause: lock, sleep, Low Power Mode, optional true fullscreen per display.
+* Pause: lock, sleep, and the extra Pause wallpaper toggle. Fullscreen apps and Low Power Mode do not pause unless turned on in Settings.
 * Weather status in extra and Settings: available, approximate, stale, unavailable. Last `WeatherKind` kept on HTTP failure. Never show `HTTP 503` on product UI.
 * Overlay titles: regular serif, not ultralight.
 * Accessibility is part of production quality: Reduce Motion, VoiceOver, keyboard focus, empty and error states, offline behavior, and permission denial. See `keep-accessibility`.

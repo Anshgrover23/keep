@@ -46,7 +46,7 @@ Name the gap. Do not boil the ocean.
 
 * **Lifecycle:** launch accessory, quit, hide wallpaper detaches, show attaches, extra opens while inactive.
 * **Memory:** no unbounded event caches; display link not retained after detach.
-* **CPU / GPU / energy:** 20 to 30 fps preferred 24; no work per frame beyond the scene; Instruments on the wallpaper window (`keep-observability`).
+* **CPU / GPU / energy:** 60 to 120 fps preferred 60; no work per frame beyond the scene; Instruments on the wallpaper window (`keep-observability`).
 * **Display changes:** rebuild per `NSScreen`; occupancy per display.
 * **Sleep / wake, lock / unlock:** separate; wake does not clear lock.
 * **Accessibility:** `keep-accessibility`.
@@ -105,12 +105,12 @@ Rationalizations that already failed here:
 | I documented 24h in the button | That is the test leaking into chrome |
 | They listed those two times | They illustrated a class |
 | Helper text prevents mistakes | Status rows already say desktop vs preview |
-| TextField in the extra should work if I activate | MenuBarExtra is not a key window. Do not isa-swap it |
+| Isa-swap the extra window so it can become key | Crashed in `WindowMenuBarExtraBehavior`. Activate while open. `makeKeyAndOrderFront` only. |
 | Lab's field works so product works | Different window |
 | Form `TextField("Placeholder")` | macOS grouped Form uses that string as a leading label. The caret sits on the trailing edge. Use an empty title, `labelsHidden()`, rounded border |
 | Lab Timer for fps while observing `FrameClock.date` | Body rebuilds every frame and restarts the timer. Count fps on the display link |
 | Lifetime display link step totals | Frame ticks, not a leak. Show running or paused and fps |
-| Preferred 24 fps | Range is 20 to 30. On 60 Hz, Core Animation often picks 30 |
+| Cap the display link at 24 fps | Range is 60 to 120, preferred 60. Other windows can still steal GPU time. |
 | `HStack { label; Spacer(); yes }` | Inspector dump. Use Form `LabeledContent` or stacked facts. Real words, not yes or no |
 | Hallmark on Keep | Hallmark is for web pages. Native Lab and wallpaper stay AppKit and SwiftUI |
 | Plan said skip consequences | Customer copy names what they get. Loss framed skip lines are threats |
