@@ -20,9 +20,9 @@ struct FrameRateMeter: Equatable, Sendable {
     }
 
     static let windowDuration: CFTimeInterval = 1
-    static let minimumFramesPerSecond: Float = 20
-    static let maximumFramesPerSecond: Float = 30
-    static let preferredFramesPerSecond: Float = 24
+    static let minimumFramesPerSecond: Float = 60
+    static let maximumFramesPerSecond: Float = 120
+    static let preferredFramesPerSecond: Float = 60
 
     mutating func recordFrame(now: CFTimeInterval) {
         framesInWindow += 1
