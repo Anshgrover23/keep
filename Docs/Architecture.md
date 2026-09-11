@@ -115,7 +115,7 @@ Tests describe behavior. A passing count is not coverage. Implemented, unit, bou
 
 ## Product weather and glance
 
-Sky still uses last `WeatherKind`. Failures do not reset to clear. Open Meteo runs only for a GPS fix. Time zone fallback does not fetch equator weather. Extra does not show approximate, stale, or unavailable weather lines. Settings shows `WeatherStatus` as Status. Approximate means time zone location, not an HTTP error. Calendar extra copy: toggle off has no glance. Toggle on and granted with nothing upcoming is a quiet day. Toggle on asks Calendar and Reminders. Extra `calendarGlance` uses wall clock `Date()`. Overlay titles use regular serif, not ultralight.
+Sky still uses last `WeatherKind`. Failures do not reset to clear. Open Meteo runs only for a GPS fix. Time zone fallback does not fetch equator weather. Extra does not show approximate, stale, or unavailable weather lines. Settings shows `WeatherStatus` as Status. Approximate means time zone location, not an HTTP error. Calendar extra copy: toggle off or not granted is `Keep can show your next event from Calendar.` Toggle on and granted with nothing upcoming is a quiet day.
 
 Lab Status uses Granted or Off for calendar and reminders. Product extra uses invitation copy when calendar is off.
 

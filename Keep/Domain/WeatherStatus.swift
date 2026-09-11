@@ -58,11 +58,11 @@ enum CalendarGlance: Equatable, Sendable {
 
     var emptyLine: String? {
         switch self {
-        case .upcoming, .off:
+        case .upcoming:
             return nil
         case .empty:
             return "Nothing upcoming. The day can stay quiet."
-        case .notGranted:
+        case .notGranted, .off:
             return "Keep can show your next event from Calendar."
         }
     }

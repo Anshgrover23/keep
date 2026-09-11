@@ -94,13 +94,11 @@ struct MenuBarView: View {
             Text("Nothing upcoming. The day can stay quiet.")
                 .font(.system(size: 13))
                 .foregroundStyle(.secondary)
-        case .notGranted:
+        case .notGranted, .off:
             Text("Keep can show your next event from Calendar.")
                 .font(.system(size: 13))
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
-        case .off:
-            EmptyView()
         }
     }
 }

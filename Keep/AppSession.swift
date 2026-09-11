@@ -1,3 +1,4 @@
+import AppKit
 import Combine
 import Foundation
 
@@ -12,6 +13,7 @@ final class AppSession: ObservableObject {
     let power: PowerMonitor
     let wallpaper: WallpaperController
     private let activation: any AppActivation
+    private let openCalendarPrivacy: () -> Void
 
     @Published var solar: SolarContext
     @Published var userPaused = false
@@ -106,6 +108,7 @@ final class AppSession: ObservableObject {
     private var tick: AnyCancellable?
     private var weatherPoll: Task<Void, Never>?
     private var started = false
+    private var pendingLocalWeatherOptIn = false
 
     static func makeProduction() -> AppSession {
         let settings = AppSettings.production
@@ -117,7 +120,16 @@ final class AppSession: ObservableObject {
             location: LocationProvider(),
             power: PowerMonitor(),
             wallpaper: WallpaperController(),
-            activation: AppKitActivation()
+            activation: AppKitActivation(),
+            openCalendarPrivacy: {
+                let candidates = [
+                    "x-apple.systempreferences:com.apple.settings.PrivacySecurity.extension?Privacy_Calendars",
+                    "x-apple.systempreferences:com.apple.preference.security?Privacy_Calendars"
+                ]
+                for candidate in candidates {
+                    if let url = URL(string: candidate), NSWorkspace.shared.open(url) { return }
+                }
+            }
         )
     }
 
@@ -129,7 +141,8 @@ final class AppSession: ObservableObject {
         location: any LocationProviding,
         power: PowerMonitor,
         wallpaper: WallpaperController,
-        activation: any AppActivation
+        activation: any AppActivation,
+        openCalendarPrivacy: @escaping () -> Void = {}
     ) {
         self.settings = settings
         self.calendar = calendar
@@ -139,6 +152,7 @@ final class AppSession: ObservableObject {
         self.power = power
         self.wallpaper = wallpaper
         self.activation = activation
+        self.openCalendarPrivacy = openCalendarPrivacy
         didOnboard = settings.didOnboard
         power.pauseWhenFullscreen = settings.pauseWhenFullscreen
         power.pauseOnLowPower = settings.pauseOnLowPower
@@ -159,12 +173,20 @@ final class AppSession: ObservableObject {
         started = true
         KeepLog.session.info("Session starting")
 
-        calendar.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &cancellables)
+        calendar.objectWillChange.sink { [weak self] _ in
+            Task { @MainActor in
+                guard let self else { return }
+                self.reconcileCalendarPreference()
+                self.objectWillChange.send()
+            }
+        }.store(in: &cancellables)
         weather.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &cancellables)
         location.objectWillChange.sink { [weak self] _ in
-            guard let self else { return }
-            self.reconcileLocationPreference()
-            self.objectWillChange.send()
+            Task { @MainActor in
+                guard let self else { return }
+                self.reconcileLocationPreference()
+                self.objectWillChange.send()
+            }
         }.store(in: &cancellables)
         intention.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &cancellables)
         power.objectWillChange.sink { [weak self] _ in
@@ -176,6 +198,14 @@ final class AppSession: ObservableObject {
         $userPaused.sink { [weak self] _ in self?.wallpaper.syncLifecycle() }.store(in: &cancellables)
 
         guard observeSystem else { return }
+
+        NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)
+            .sink { [weak self] _ in
+                Task { @MainActor in
+                    await self?.syncCalendarAccessWithSystem()
+                }
+            }
+            .store(in: &cancellables)
 
         wallpaper.attach(session: self)
         wallpaper.start()
@@ -201,7 +231,8 @@ final class AppSession: ObservableObject {
             .sink { [weak self] _ in
                 Task {
                     guard let self, self.showCalendarEvents else { return }
-                    await self.calendar.refresh()
+                    await self.calendar.requestAccessAndRefresh()
+                    self.reconcileCalendarPreference()
                 }
             }
             .store(in: &cancellables)
@@ -230,29 +261,29 @@ final class AppSession: ObservableObject {
             objectWillChange.send()
             return
         }
-        settings.showCalendarEvents = true
-        objectWillChange.send()
         calendar.start()
+        let needsPrivacyPane = !calendar.eventsGranted && !calendar.canRequestCalendarAccess
         await calendar.requestAccessAndRefresh()
-        if !calendar.accessGranted {
-            settings.showCalendarEvents = false
-            objectWillChange.send()
+        settings.showCalendarEvents = calendar.eventsGranted
+        if !calendar.eventsGranted, needsPrivacyPane {
+            openCalendarPrivacy()
         }
+        objectWillChange.send()
     }
 
     func setUseLocalWeather(_ on: Bool) async {
         if !on {
+            pendingLocalWeatherOptIn = false
             settings.useLocalWeather = false
             refreshSolar()
             await refreshWeatherFromEffectiveFix(force: true)
             objectWillChange.send()
             return
         }
-        settings.useLocalWeather = true
-        objectWillChange.send()
+        pendingLocalWeatherOptIn = true
         location.request()
-        if location.access != .notDetermined, !location.authorized {
-            settings.useLocalWeather = false
+        applyLocationPreferenceFromAccess()
+        if !useLocalWeather {
             objectWillChange.send()
             return
         }
@@ -261,13 +292,31 @@ final class AppSession: ObservableObject {
         objectWillChange.send()
     }
 
-    private func reconcileLocationPreference() {
-        guard useLocalWeather else { return }
+    /// Toggle on only after Calendar can actually be read.
+    private func reconcileCalendarPreference() {
+        guard showCalendarEvents, !calendar.eventsGranted else { return }
+        settings.showCalendarEvents = false
+    }
+
+    /// Toggle on only after Location can actually be read.
+    private func applyLocationPreferenceFromAccess() {
+        if location.authorized {
+            if pendingLocalWeatherOptIn || useLocalWeather {
+                settings.useLocalWeather = true
+                pendingLocalWeatherOptIn = false
+            }
+            return
+        }
         if location.access == .denied || location.access == .restricted {
             settings.useLocalWeather = false
+            pendingLocalWeatherOptIn = false
         }
+    }
+
+    private func reconcileLocationPreference() {
+        applyLocationPreferenceFromAccess()
         refreshSolar()
-        if effectiveFix.isMeasured {
+        if useLocalWeather, effectiveFix.isMeasured {
             Task { await refreshWeatherFromEffectiveFix(force: true) }
         }
     }
@@ -291,6 +340,17 @@ final class AppSession: ObservableObject {
     func menuExtraDidAppear() {
         isMenuExtraOpen = true
         activation.becomeRegular()
+        Task { await syncCalendarAccessWithSystem() }
+    }
+
+    /// EventKit does not post store changes when TCC is revoked in System Settings.
+    func syncCalendarAccessWithSystem() async {
+        if showCalendarEvents {
+            calendar.start()
+            await calendar.requestAccessAndRefresh()
+        }
+        reconcileCalendarPreference()
+        objectWillChange.send()
     }
 
     func menuExtraDidDisappear() {
