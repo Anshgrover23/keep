@@ -76,7 +76,7 @@ struct SystemPausePolicyTests {
         )
     }
 
-    @Test func lowPowerHonorsOptOut() {
+    @Test func lowPowerDoesNotPauseUnlessOptedIn() {
         #expect(
             SystemPausePolicy.shouldPause(
                 screenLocked: false,
@@ -84,6 +84,14 @@ struct SystemPausePolicyTests {
                 lowPowerMode: true,
                 pauseOnLowPower: false
             ) == false
+        )
+        #expect(
+            SystemPausePolicy.shouldPause(
+                screenLocked: false,
+                asleep: false,
+                lowPowerMode: true,
+                pauseOnLowPower: true
+            )
         )
     }
 }
@@ -172,6 +180,15 @@ struct PowerMonitorSleepVsLockTests {
         #expect(power.isStarted)
         #expect(power.notificationTokenCount == tokens)
         power.stop()
+    }
+
+    @Test func lowPowerSimulationDoesNotPauseUnlessOptedIn() {
+        let power = PowerMonitor()
+        power.simulatedLowPower = true
+        #expect(power.systemShouldPause == false)
+        power.pauseOnLowPower = true
+        #expect(power.systemShouldPause)
+        #expect(power.pauseReason == "simulated Low Power Mode")
     }
 }
 

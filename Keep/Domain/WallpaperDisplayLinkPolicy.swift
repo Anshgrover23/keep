@@ -17,7 +17,7 @@ enum WallpaperDisplayLinkPolicy {
     }
 }
 
-/// Lock, sleep, LPM. True fullscreen is per display (`FullscreenClassification`), not a global pause.
+/// Lock and sleep always pause. Low Power Mode only if the Settings opt in is on. True fullscreen is per display.
 enum SystemPausePolicy {
     static func shouldPause(
         screenLocked: Bool,

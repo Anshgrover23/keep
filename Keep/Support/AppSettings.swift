@@ -50,12 +50,12 @@ final class AppSettings: SettingsStore {
     }
 
     var pauseWhenFullscreen: Bool {
-        get { defaults.object(forKey: Key.pauseFullscreen) as? Bool ?? true }
+        get { defaults.object(forKey: Key.pauseFullscreen) as? Bool ?? false }
         set { defaults.set(newValue, forKey: Key.pauseFullscreen) }
     }
 
     var pauseOnLowPower: Bool {
-        get { defaults.object(forKey: Key.pauseLowPower) as? Bool ?? true }
+        get { defaults.object(forKey: Key.pauseLowPower) as? Bool ?? false }
         set { defaults.set(newValue, forKey: Key.pauseLowPower) }
     }
 

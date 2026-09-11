@@ -58,8 +58,8 @@ struct SettingsDefaultsAndRelaunchTests {
         defaults.removePersistentDomain(forName: suite)
         let settings = AppSettings(defaults: defaults)
         #expect(settings.didOnboard == false)
-        #expect(settings.pauseWhenFullscreen)
-        #expect(settings.pauseOnLowPower)
+        #expect(settings.pauseWhenFullscreen == false)
+        #expect(settings.pauseOnLowPower == false)
         #expect(settings.intentionText.isEmpty)
         #expect(settings.intentionDay.isEmpty)
         #expect(settings.schemaVersion == AppSettings.currentSchemaVersion)
@@ -73,7 +73,7 @@ struct SettingsDefaultsAndRelaunchTests {
         let settings = AppSettings(defaults: defaults)
         #expect(settings.intentionText == "Keep the day")
         #expect(settings.schemaVersion == 1)
-        #expect(settings.pauseWhenFullscreen)
+        #expect(settings.pauseWhenFullscreen == false)
     }
 
     @Test func newerSchemaVersionIsLeftAlone() {

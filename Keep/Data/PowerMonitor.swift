@@ -15,8 +15,8 @@ final class PowerMonitor: ObservableObject {
     @Published var simulatedLowPower = false
     @Published var simulatedFullscreen = false
 
-    @Published var pauseWhenFullscreen = true
-    @Published var pauseOnLowPower = true
+    @Published var pauseWhenFullscreen = false
+    @Published var pauseOnLowPower = false
 
     private(set) var isStarted = false
 
