@@ -16,7 +16,7 @@ struct OnboardingView: View {
         VStack(alignment: .leading, spacing: 22) {
             Text("Keep")
                 .font(.system(size: 34, weight: .light, design: .serif))
-            Text("Your wallpaper becomes a living day: light, weather, and the one thing you should not forget.")
+            Text("Your wallpaper becomes a living day: light, weather, and today’s Keep.")
                 .font(.system(size: 15))
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)

@@ -31,9 +31,9 @@
 	<key>NSRemindersUsageDescription</key>
 	<string>Keep can show an overdue reminder on the desktop.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Keep uses your location for local weather and daylight.</string>
+	<string>Keep uses your location for weather and daylight.</string>
 	<key>NSLocationUsageDescription</key>
-	<string>Keep uses your location for local weather and daylight.</string>
+	<string>Keep uses your location for weather and daylight.</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
 </dict>
