@@ -19,6 +19,8 @@ final class EventKitCatalog: CalendarCataloging {
     private let store: EKEventStore
     private let reminderTimeout: TimeInterval
     private var observer: NSObjectProtocol?
+    private var probedEvents: CalendarAccess?
+    private var probedReminders: CalendarAccess?
 
     init(store: EKEventStore = EKEventStore(), reminderTimeout: TimeInterval = reminderFetchTimeout) {
         self.store = store
@@ -27,27 +29,43 @@ final class EventKitCatalog: CalendarCataloging {
 
     func currentAccess() -> (events: CalendarAccess, reminders: CalendarAccess) {
         (
-            events: Self.map(EKEventStore.authorizationStatus(for: .event)),
-            reminders: Self.map(EKEventStore.authorizationStatus(for: .reminder))
+            events: CalendarAccess.combining(
+                live: Self.map(EKEventStore.authorizationStatus(for: .event)),
+                probed: probedEvents
+            ),
+            reminders: CalendarAccess.combining(
+                live: Self.map(EKEventStore.authorizationStatus(for: .reminder)),
+                probed: probedReminders
+            )
         )
     }
 
     func requestAccess() async -> (events: CalendarAccess, reminders: CalendarAccess, error: String?) {
         var errorText: String?
+        var eventsOK = false
+        var remindersOK = false
         do {
-            _ = try await store.requestFullAccessToEvents()
+            eventsOK = try await store.requestFullAccessToEvents()
         } catch {
             errorText = error.localizedDescription
             KeepLog.calendar.error("Event access failed: \(error.localizedDescription, privacy: .public)")
         }
         do {
-            _ = try await store.requestFullAccessToReminders()
+            remindersOK = try await store.requestFullAccessToReminders()
         } catch {
             errorText = error.localizedDescription
             KeepLog.calendar.error("Reminders access failed: \(error.localizedDescription, privacy: .public)")
         }
-        let access = currentAccess()
-        return (access.events, access.reminders, errorText)
+        let live = (
+            events: Self.map(EKEventStore.authorizationStatus(for: .event)),
+            reminders: Self.map(EKEventStore.authorizationStatus(for: .reminder))
+        )
+        probedEvents = CalendarAccess.afterPrompt(success: eventsOK, status: live.events)
+        probedReminders = CalendarAccess.afterPrompt(success: remindersOK, status: live.reminders)
+        KeepLog.calendar.info(
+            "Calendar events=\(self.probedEvents?.canRead ?? false) reminders=\(self.probedReminders?.canRead ?? false)"
+        )
+        return (probedEvents ?? live.events, probedReminders ?? live.reminders, errorText)
     }
 
     func loadSnapshot(at now: Date) async -> CalendarSnapshot {
@@ -83,6 +101,8 @@ final class EventKitCatalog: CalendarCataloging {
         if let observer {
             NotificationCenter.default.removeObserver(observer)
         }
+        // Store changes are calendar data, not Privacy toggles. TCC revoke is
+        // re-read from `authorizationStatus` when Keep becomes active.
         observer = NotificationCenter.default.addObserver(
             forName: .EKEventStoreChanged,
             object: store,
