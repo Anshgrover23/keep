@@ -21,18 +21,21 @@ struct SettingsView: View {
                 Button("Refresh weather") {
                     Task {
                         await session.weather.refresh(
-                            latitude: session.location.latitude,
-                            longitude: session.location.longitude,
+                            latitude: session.effectiveFix.weatherLatitude,
+                            longitude: session.effectiveFix.longitude,
                             force: true
                         )
                     }
                 }
             }
             Section("Calendar") {
-                LabeledContent("Access", value: session.calendar.accessGranted ? "On" : "Off")
-                Button("Show next event") {
-                    Task { await session.calendar.requestAccessAndRefresh() }
-                }
+                Toggle(
+                    "Show events from Calendar",
+                    isOn: Binding(
+                        get: { session.showCalendarEvents },
+                        set: { on in Task { await session.setShowCalendarEvents(on) } }
+                    )
+                )
                 .accessibilityHint("Keep can show your next event from Calendar.")
                 Text("Keep can show your next event from Calendar.")
                     .foregroundStyle(.secondary)
@@ -40,10 +43,13 @@ struct SettingsView: View {
                     .accessibilityHidden(true)
             }
             Section("Location") {
-                LabeledContent("Access", value: session.location.authorized ? "On" : "Off")
-                Button("Use local weather") {
-                    session.location.request()
-                }
+                Toggle(
+                    "Use local weather",
+                    isOn: Binding(
+                        get: { session.useLocalWeather },
+                        set: { on in Task { await session.setUseLocalWeather(on) } }
+                    )
+                )
                 .accessibilityHint("Keep can use your location for weather and daylight where you are.")
                 Text("Keep can use your location for weather and daylight where you are.")
                     .foregroundStyle(.secondary)

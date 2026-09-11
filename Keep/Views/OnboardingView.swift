@@ -38,26 +38,29 @@ struct OnboardingView: View {
                 Text("Optional")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundStyle(.secondary)
-                Button(requestingCalendar ? "Asking Calendar…" : "Show next event") {
-                    Task {
-                        requestingCalendar = true
-                        await session.calendar.requestAccessAndRefresh()
-                        requestingCalendar = false
-                    }
-                }
+                Toggle(
+                    "Show events from Calendar",
+                    isOn: Binding(
+                        get: { session.showCalendarEvents },
+                        set: { on in
+                            Task {
+                                requestingCalendar = true
+                                await session.setShowCalendarEvents(on)
+                                requestingCalendar = false
+                            }
+                        }
+                    )
+                )
                 .disabled(requestingCalendar)
                 .accessibilityHint("Keep can show your next event from Calendar.")
                 helper("Keep can show your next event from Calendar.")
-                Button("Use local weather") {
-                    session.location.request()
-                    Task {
-                        await session.weather.refresh(
-                            latitude: session.location.latitude,
-                            longitude: session.location.longitude,
-                            force: true
-                        )
-                    }
-                }
+                Toggle(
+                    "Use local weather",
+                    isOn: Binding(
+                        get: { session.useLocalWeather },
+                        set: { on in Task { await session.setUseLocalWeather(on) } }
+                    )
+                )
                 .accessibilityHint("Keep can use your location for weather and daylight where you are.")
                 helper("Keep can use your location for weather and daylight where you are.")
             }

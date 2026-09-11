@@ -38,15 +38,7 @@ struct MenuBarView: View {
             }
             .background(ExtraKeyAttempt())
 
-            Divider()
-
-            Toggle(
-                "Show Keep on the desktop",
-                isOn: Binding(
-                    get: { session.wallpaper.isVisible },
-                    set: { session.wallpaper.setVisible($0) }
-                )
-            )
+            KeepDataToggles()
 
             HStack {
                 SettingsLink {
@@ -103,10 +95,44 @@ struct MenuBarView: View {
                 .font(.system(size: 13))
                 .foregroundStyle(.secondary)
         case .notGranted:
-            Text("Keep can show your next event.")
+            Text("Keep can show your next event from Calendar.")
                 .font(.system(size: 13))
                 .foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
+        case .off:
+            EmptyView()
+        }
+    }
+}
+
+struct KeepDataToggles: View {
+    @EnvironmentObject private var session: AppSession
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Toggle(
+                "Show events from Calendar",
+                isOn: Binding(
+                    get: { session.showCalendarEvents },
+                    set: { on in Task { await session.setShowCalendarEvents(on) } }
+                )
+            )
+            .accessibilityHint("Keep can show your next event from Calendar.")
+            Toggle(
+                "Use local weather",
+                isOn: Binding(
+                    get: { session.useLocalWeather },
+                    set: { on in Task { await session.setUseLocalWeather(on) } }
+                )
+            )
+            .accessibilityHint("Keep can use your location for weather and daylight where you are.")
+            Toggle(
+                "Show Keep on the desktop",
+                isOn: Binding(
+                    get: { session.wallpaper.isVisible },
+                    set: { session.wallpaper.setVisible($0) }
+                )
+            )
         }
     }
 }
