@@ -99,7 +99,7 @@ There is no public “any app is fullscreen” API. Keep classifies layer 0 wind
 
 Lock and sleep pause every display. Low Power Mode and true fullscreen do not, unless Settings opt in. Simulated fullscreen pauses every display (Lab). If menu bar and Dock are hidden, `visibleFrame` can equal `frame` and maximized is indistinguishable from fullscreen.
 
-**Evidence (11 Sep 2026):** Lab passed on the wallpaper window: zoomed/Fill does not pause; Keep Lab does not count as covering. Native Full Screen pauses that display only when Pause in fullscreen is on.
+**Evidence (11 Sep 2026):** Lab on the wallpaper window: zoomed/Fill does not pause; Keep Lab does not count as covering. Native Full Screen pauses that display only when Pause in fullscreen is on.
 
 ## Menu extra keyboard
 
@@ -111,9 +111,7 @@ Keep launches as `LSUIElement` (accessory). Today’s Keep is a field in the win
 
 ## Tests
 
-Tests describe behavior. A passing count is not coverage. Four claims stay separate: implemented, unit tested, boundary tested, Lab on the real macOS surface.
-
-Staged architecture validation (1 to 8) is **complete** and frozen. In process tests are not proof of process kill or a TCC identity change.
+Tests describe behavior. A passing count is not coverage. Implemented, unit, boundary, Lab, and distribution stay separate claims. In process tests are not proof of process kill or a TCC identity change.
 
 ## Product weather and glance
 
@@ -130,8 +128,8 @@ Lab Status uses Granted or Off for calendar and reminders. Product extra uses in
 * Fail next weather: sky kept last kind; extra showed stale or unavailable, never HTTP 503.
 * Hide detached the desktop display link; show attached it again.
 * Lock, sleep, and wake stayed separate. Wake did not clear a lock that was still asserted.
-* Safari true Full Screen paused that display. Maximized did not. Keep Lab was ignored. Another display stayed independent.
-* Extra typing is the extra field. Lab on that extra is still required.
+* Occupancy treats native Full Screen as true fullscreen on that display. Pause only if Pause in fullscreen is on. Maximized does not pause. Keep Lab is ignored.
+* Extra typing is the extra field (Return or close commits).
 * First run: intention required; calendar and location optional; invitational copy.
 
 Keep runs as a menu bar agent with wallpaper beneath Finder, atmosphere driven by solar state and weather, calendar glance, graceful weather and location denial, pause behavior, per display fullscreen handling, and production Settings and first run.
@@ -170,7 +168,7 @@ Tests are grouped by what can go wrong, not by how many `@Test`s exist. Lab/syst
 | Sleep vs lock; wake does not clear lock | Unit and Lab 11 Sep 2026 | `WallpaperLifecycleTests`, `FailureModeTests` |
 | Hide wallpaper / display loss | Unit and Lab 11 Sep 2026 | `WallpaperLifecycleTests` |
 | True FS vs maximized vs Lab vs other display | Unit and Lab 11 Sep 2026 | `FullscreenClassificationTests` |
-| Extra typing vs MenuBarExtra | Implemented in extra field. Lab on the extra still required. | `MenuBarView` |
+| Extra typing vs MenuBarExtra | Extra field; become regular while open | `MenuBarView` |
 | First run optional grants | Lab 11 Sep 2026 | onboarding |
 | Settings missing keys / relaunch persistence | Unit | `FailureModeTests` |
 | Process death | Not simulated beyond new `AppSettings`/`AppSession` on the same suite | `FailureModeTests` |

@@ -27,9 +27,9 @@ Lab (internal harness): menu extra → **Lab**. Pin midnight vs noon, fail next 
 
 ## Architecture
 
-See [Docs/Architecture.md](Docs/Architecture.md). `AppSession` coordinates injectable boundaries. Stages 1 to 8 are complete and frozen.
+See [Docs/Architecture.md](Docs/Architecture.md). `AppSession` coordinates injectable boundaries.
 
-Keep runs as a menu bar agent with wallpaper beneath Finder, atmosphere from solar state and weather, calendar glance, pause, per display fullscreen, and Settings plus first run. CoreLocation Lab (deny, grant without relaunch, approximate weather with denied GPS) passed 11 Sep 2026. App Store shipping is not claimed.
+Keep is a menu bar agent with wallpaper beneath Finder, atmosphere from solar state and weather, calendar glance, pause, per display occupancy, and Settings plus first run. Signing is ad hoc. App Store shipping is not claimed.
 
 ## Privacy
 

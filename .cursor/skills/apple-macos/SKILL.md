@@ -2,108 +2,44 @@
 name: apple-macos
 description: >-
   Keep macOS overlay: LSUIElement, MenuBarExtra, wallpaper NSWindow,
-  NSWindow.displayLink, per display lifecycle, desktop window levels,
-  sleep lock, CoreLocation, EventKit, sandbox, accessibility, notarization.
-  Use when writing Swift AppKit SwiftUI EventKit CoreLocation or Swift Testing
-  for Keep. Apple docs win for API semantics; Keep product contract wins for
-  product behavior.
+  NSWindow.displayLink, EventKit, CoreLocation, sandbox. Use when writing
+  Swift AppKit SwiftUI for Keep. Apple docs win for APIs. The user wins for product.
 ---
 
 # Apple macOS (Keep)
 
-Public Swift and Apple skills exist. Install them only for the slice, then reconcile (`keep-skill-selection`). This file is the **Keep overlay**: wallpaper windows, accessory apps, and what those skills get wrong for this product.
+Apple docs win for API semantics. The user wins for product. Public Swift skills are optional specialists. Do not dump iOS defaults into this app.
 
-> Apple documentation wins for API semantics. Keep's product contract wins for product behavior.
+## Accessory
 
-Index of packages: [sources.md](sources.md).
+`LSUIElement`: menu bar agent. Not `LSBackgroundOnly`. Wallpaper windows are not key. While the extra is open, Keep becomes regular so the extra field can take keys, then accessory again. Do not flip activation on every extra frame.
 
-## Load first for Keep
+## Extra
 
-1. `keep-skill-selection` and `keep-process`.
-2. This skill.
-3. `production-app` for chrome, Lab vs product.
-4. One published skill only if the slice needs API depth (SwiftUI views, Swift 6, EventKit, tests). Do not dump 80 iOS skills into a menu bar wallpaper app.
+Keep uses SwiftUI `MenuBarExtra` with `.window` for glance and today’s Keep. Become regular while it is open. `makeKeyAndOrderFront` is fine. `object_setClass` on that window crashed in `WindowMenuBarExtraBehavior.configuration.setter`. Do not do that.
 
-## Accessory and activation
+Do not rewrite to `NSStatusItem` unless they ask. Do not add `SMAppService` because a menubar skill scaffolds it.
 
-* `LSUIElement` is the contract: menu bar agent, Quit, Settings, Lab. Not `LSBackgroundOnly`.
-* Do not flip `NSApplication.activationPolicy` on every extra frame.
-* Wallpaper windows are not key. While the extra is open Keep becomes regular so the extra field can take keys. Do not `object_setClass` the extra window.
+## Wallpaper
 
-## Shell choice (menu extra)
+AppKit `NSWindow` at `desktopIconWindow` minus 1. Desktop clock: `NSWindow.displayLink`. Lab preview: `NSScreen.displayLink`. Hide detaches. Pause stays attached. Rebuild on screen change. Sleep and lock are separate notifications.
 
-From [zhutao100/macos-menubar-app-dev-skill](https://github.com/zhutao100/macos-menubar-app-dev-skill), plus our crash:
-
-| Need | Shell |
-| --- | --- |
-| Toggles and buttons only | `MenuBarExtra` `.menu` |
-| Glance panel (Keep extra) | `MenuBarExtra` `.window` is fine for **display** |
-| Typing in the extra | `MenuBarExtra` `.window` plus regular activation while it is open. `makeKeyAndOrderFront` only. Never `object_setClass`. |
-
-Keep today: extra is `.window` for glance and today’s Keep. That class swap crashed in `WindowMenuBarExtraBehavior.configuration.setter`.
-
-> Lab typing proof is the extra field on the real menu extra, not a unit test.
-
-AvdLee `macos-scenes` prefers `MenuBarExtra` over `NSStatusItem`. True for simple menus. Keep already hit the exception: focusable fields. Do not rewrite the extra to `NSStatusItem` unless the user asked.
-
-Do not add `SMAppService` launch at login because a menubar skill scaffolds it.
-
-## Wallpaper window
-
-* AppKit `NSWindow` at `desktopIconWindow` minus 1.
-* Desktop clock: `NSWindow.displayLink`. Lab preview: `NSScreen.displayLink`. Not the same clock.
-* Hide **detaches**. Pause stays attached (`WallpaperDisplayLinkPolicy`).
-* Per display lifecycle: rebuild on screen change; occupancy and true fullscreen classified per display; own PID ignored.
-* Sleep and lock: `PowerMonitor` notifications. Treat as separate reasons.
-
-[ckorhonen macos-apps](https://github.com/ckorhonen/claude-skills/blob/main/skills/macos-apps/references/swiftui-patterns.md): if SwiftUI hosts the window, do not fight it with more AppKit. If **we** created the `NSWindow`, AppKit is the owner. Wallpaper is ours. Menu extra is SwiftUI’s.
-
-Do not use `TimelineView` for desktop particles. Do not use SpriteKit `SKView` (pauses when inactive).
+If we created the `NSWindow`, AppKit owns it. The extra is SwiftUI’s. SpriteKit `SKView` pauses when inactive. Do not use it for the desktop. Do not use `TimelineView` for desktop particles.
 
 ## Swift 6
 
-Keep is language mode 6. HTTP is an `actor`. Session stays `@MainActor`. No `@unchecked Sendable`. No `nonisolated(unsafe)`. EventKit values are copied into Sendable drafts. For concurrency depth use twostraws Swift Concurrency Pro or Axiom, then still obey this repo.
+Language mode 6. HTTP is an `actor`. Session is `@MainActor`. No `@unchecked Sendable`. No `nonisolated(unsafe)`. Copy EventKit values into Sendable drafts. EventKit import in the catalog is `@preconcurrency` so Xcode 16.4 can call `requestFullAccessToEvents`.
 
 ## EventKit
 
-One `EKEventStore`. Prompt only from onboarding, Settings, Lab. Re-read auth on refresh. Domain types do not import EventKit. Next event rules are Keep policy (`NextMemoryPolicy`), not Apple’s UI.
-
-Published `eventkit` skills include EventKitUI. Keep does not ship EventKitUI.
+One `EKEventStore`. Prompt from onboarding, Settings, Lab. Domain types do not import EventKit. Keep does not ship EventKitUI.
 
 ## CoreLocation
 
-Prompt on user action only. No fake latitude 23°. Unauthorized sky is solar time at TZ longitude. Approximate weather is a product status, not an API error. CoreLocation Lab is verified (11 Sep 2026). Do not reopen “we still need a location Lab.”
+Prompt on user action only. No fake latitude 23°. Unauthorized sky is solar time at TZ longitude. Approximate weather is a product status. Weather is Open Meteo through `HTTPClient`, not WeatherKit.
 
-WeatherKit skills: **do not adopt.** Weather is Open Meteo through `HTTPClient`.
+## Sandbox
 
-## Sandbox and notarization
+Entitlements: `Keep/Keep.entitlements`. Hardened runtime is on. Signing identity is `-` until `keep-release` is requested. Do not copy iOS entitlement templates.
 
-Entitlements live in `Keep/Keep.entitlements` (sandbox, network client, calendars, location, reminders). Hardened runtime is on. Signing identity is still `-` until `keep-release` work is requested.
-
-Apple docs win for sandbox exception semantics. Do not copy Axiom or iOS entitlement templates wholesale.
-
-Accessibility: `keep-accessibility`. Notarization: `keep-release`.
-
-## Tests
-
-Swift Testing (`@Test`, `#expect`). Behavior, not counts (`keep-testing`). Lab on the wallpaper window is still required for display link and fullscreen.
-
-## Do not import from iOS skills
-
-Liquid Glass as the whole UI. WeatherKit as default weather. `NavigationStack` as app chrome. iPhone Dynamic Type recipes as the only a11y story. Catalyst. StoreKit. WidgetKit (out of Keep v1).
-
-## Install (only when the slice needs them)
-
-```bash
-npx skills add https://github.com/twostraws/swiftui-agent-skill --skill swiftui-pro
-npx skills add https://github.com/twostraws/swift-testing-agent-skill --skill swift-testing-pro
-npx skills add https://github.com/twostraws/swift-concurrency-agent-skill --skill swift-concurrency-pro
-npx skills add https://github.com/avdlee/swiftui-agent-skill --skill swiftui-expert-skill
-npx skills add https://github.com/zhutao100/macos-menubar-app-dev-skill --skill macos-menubar-app-development
-npx skills add dpearson2699/swift-ios-skills --skill eventkit
-npx skills add CharlesWiltgen/Axiom
-```
-
-Directory of more packages: https://github.com/twostraws/Swift-Agent-Skills
-
-Installing is not adopting. Reconcile, then reject conflicts out loud.
+Published skill index: [sources.md](sources.md). Installing is not adopting.
