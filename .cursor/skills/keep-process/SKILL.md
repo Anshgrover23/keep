@@ -41,7 +41,7 @@ EventKit: one store. Domain types do not import EventKit. Prompt from onboarding
 
 Location: no fake latitude 23°. Without GPS, TZ longitude and solar time bands.
 
-Wallpaper: `desktopIconWindow` minus 1. Hide detaches. Pause stays attached. Occupancy is per display. Own PID ignored. Fullscreen and Low Power Mode pause only if Settings opt in.
+Wallpaper: `desktopIconWindow` minus 1. Extra “Show Keep on the desktop” off detaches. Lock and sleep pause while attached. Occupancy is per display. Own PID ignored. Fullscreen and Low Power Mode pause only if Settings opt in.
 
 Today’s Keep is edited in the menu extra field. Same `IntentionStore` the wallpaper reads.
 

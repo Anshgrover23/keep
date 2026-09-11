@@ -17,7 +17,7 @@ The user can change this. Update this file when they do.
 | Surface | Role |
 | --- | --- |
 | Wallpaper | Primary product. AppKit `NSWindow` under Finder icons. Living sky plus at most two memory lines. |
-| Menu extra | Glance, today’s Keep field (store and edit here), pause, Settings, Lab, Quit. |
+| Menu extra | Glance, today’s Keep field, show or hide Keep on the desktop, Settings, Lab, Quit. |
 | Settings and onboarding | Grants, wallpaper toggle, first run. |
 | Lab | Drive the same production path. Not a second weather client. |
 
@@ -25,9 +25,9 @@ The user can change this. Update this file when they do.
 
 * Living Day: sky from solar time or GPS elevation. Weather from Open Meteo.
 * Ambient Memory: at most two lines. Next calendar item (or due reminder) and today’s Keep.
-* Agent (`LSUIElement`): extra as above.
+* Agent (`LSUIElement`): extra as above. Off on “Show Keep on the desktop” detaches the wallpaper windows so the Mac picture is back.
 * First run: intention required. Calendar and location optional, as two actions.
-* Pause: lock, sleep, extra Pause wallpaper. Fullscreen and Low Power Mode only if Settings opt in.
+* Pause: lock and sleep freeze the sky. Fullscreen and Low Power Mode only if Settings opt in. Lab can still freeze without hiding.
 * Display link: preferred 60 fps, range 60 to 120, unless the user asks otherwise.
 * Weather status: available, approximate, stale, unavailable. Last `WeatherKind` kept on HTTP failure. No HTTP codes on product UI.
 * Overlay titles: regular serif, not ultralight.

@@ -40,7 +40,13 @@ struct MenuBarView: View {
 
             Divider()
 
-            Toggle("Pause wallpaper", isOn: $session.userPaused)
+            Toggle(
+                "Show Keep on the desktop",
+                isOn: Binding(
+                    get: { session.wallpaper.isVisible },
+                    set: { session.wallpaper.setVisible($0) }
+                )
+            )
 
             HStack {
                 SettingsLink {

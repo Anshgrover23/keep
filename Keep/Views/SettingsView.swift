@@ -7,7 +7,7 @@ struct SettingsView: View {
         Form {
             Section("Wallpaper") {
                 Toggle(
-                    "Show live wallpaper",
+                    "Show Keep on the desktop",
                     isOn: Binding(
                         get: { session.wallpaper.isVisible },
                         set: { session.wallpaper.setVisible($0) }
