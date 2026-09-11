@@ -11,6 +11,8 @@ protocol CalendarReading: AnyObject {
     var remindersGranted: Bool { get }
     var lastError: String? { get }
     var accessGranted: Bool { get }
+    /// True while EventKit has not decided events or reminders yet. Denied is not this.
+    var canRequestCalendarAccess: Bool { get }
     func start()
     func requestAccessAndRefresh() async
     func refresh() async

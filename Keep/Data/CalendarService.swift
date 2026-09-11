@@ -12,6 +12,9 @@ final class CalendarService: ObservableObject, CalendarReading {
     var eventsGranted: Bool { eventsAccess.canRead }
     var remindersGranted: Bool { remindersAccess.canRead }
     var accessGranted: Bool { eventsGranted || remindersGranted }
+    var canRequestCalendarAccess: Bool {
+        eventsAccess == .notDetermined || remindersAccess == .notDetermined
+    }
 
     private let catalog: any CalendarCataloging
     private let now: () -> Date

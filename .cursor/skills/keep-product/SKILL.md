@@ -26,10 +26,10 @@ The user can change this. Update this file when they do.
 * Living Day: sky from solar time or GPS elevation. Weather from Open Meteo.
 * Ambient Memory: at most two lines. Next calendar item (or due reminder) and today’s Keep.
 * Agent (`LSUIElement`): extra as above. Off on “Show Keep on the desktop” detaches the wallpaper windows so the Mac picture is back.
-* First run: intention required. Calendar and location optional, as two actions.
+* First run: intention required. Calendar and location optional toggles. Turning them on asks macOS.
 * Pause: lock and sleep freeze the sky. Fullscreen and Low Power Mode only if Settings opt in. Lab can still freeze without hiding.
 * Display link: preferred 60 fps, range 60 to 120, unless the user asks otherwise.
-* Weather status: available, approximate, stale, unavailable. Last `WeatherKind` kept on HTTP failure. No HTTP codes on product UI.
+* Weather from Open Meteo only for a measured GPS fix. Time zone fallback does not fetch a forecast for the equator. Extra does not show approximate, stale, or unavailable weather lines. Settings shows Status. Last `WeatherKind` kept on HTTP failure. No HTTP codes on product UI.
 * Overlay titles: regular serif, not ultralight.
 
 No feature expansion unless they ask.
@@ -42,9 +42,9 @@ Custom video wallpaper, widgets, Screenpipe, contacts, streaks, iCloud, iOS comp
 
 Invitational. Optional means they can continue. Name what the grant enables. Do not threaten a skip.
 
-Right: button `Show next event`. Helper `Keep can show your next event from Calendar.`
-Right: button `Use local weather`. Helper `Keep can use your location for weather and daylight where you are.`
+Right: toggle `Show events from Calendar`. Helper `Keep can show your next event from Calendar.` Turning it on asks Calendar and Reminders.
+Right: toggle `Use local weather`. Helper `Keep can use your location for weather and daylight where you are.` Turning it on asks Location.
 
-Empty calendar: quiet day. Calendar off: `Keep can show your next event.` Approximate weather is still weather. Helper text wraps.
+Empty calendar: quiet day. Calendar toggle off: no glance line. Denied grant snaps the toggle off. Approximate weather is still weather. Helper text wraps.
 
 Purpose strings: one sentence, what Keep uses the data for.

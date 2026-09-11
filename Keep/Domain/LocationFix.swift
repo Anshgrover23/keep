@@ -32,6 +32,11 @@ enum LocationFix: Equatable, Sendable {
         }
     }
 
+    var isMeasured: Bool {
+        if case .gps = self { return true }
+        return false
+    }
+
     var solarObserver: SolarObserver {
         switch self {
         case .gps(let latitude, let longitude):

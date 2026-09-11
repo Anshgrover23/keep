@@ -90,6 +90,8 @@ struct AppSessionInjectionTests {
 
         let now = Date()
         let session = makeSession(calendar: calendar, weather: weather, location: location)
+        session.settings.showCalendarEvents = true
+        session.settings.useLocalWeather = true
         session.refreshSolar(at: now)
 
         #expect(session.effectiveNextItem?.title == "Injected event")
@@ -102,6 +104,7 @@ struct AppSessionInjectionTests {
         let calendar = FakeCalendar()
         calendar.nextItem = MemoryItem(kind: .event, title: "Live", date: Date().addingTimeInterval(600))
         let session = makeSession(calendar: calendar, weather: FakeWeather(), location: FakeLocation())
+        session.settings.showCalendarEvents = true
 
         #expect(session.effectiveNextItem?.title == "Live")
         session.injectMemory(title: "Lab event", minutesFromNow: 8, kind: .event)
@@ -135,17 +138,24 @@ struct AppSessionInjectionTests {
             weather: weather,
             location: gps
         )
+        availableSession.settings.useLocalWeather = true
         #expect(availableSession.weatherStatus == .available)
         #expect(availableSession.weatherStatus.extraLine == nil)
     }
 
-    @Test func calendarGlanceSeparatesNotGrantedFromEmpty() {
+    @Test func calendarGlanceSeparatesNotGrantedFromEmpty() async {
         let calendar = FakeCalendar()
+        calendar.grantOnRequest = false
         let session = makeSession(calendar: calendar, weather: FakeWeather(), location: FakeLocation())
-        #expect(session.calendarGlance == .notGranted)
-        #expect(session.calendarGlance.emptyLine == "Keep can show your next event.")
+        #expect(session.calendarGlance == .off)
 
-        calendar.eventsGranted = true
+        await session.setShowCalendarEvents(true)
+        #expect(session.showCalendarEvents == false)
+        #expect(session.calendarGlance == .off)
+
+        calendar.grantOnRequest = true
+        await session.setShowCalendarEvents(true)
+        #expect(session.showCalendarEvents)
         #expect(session.calendarGlance == .empty)
         #expect(session.calendarGlance.emptyLine == "Nothing upcoming. The day can stay quiet.")
 
@@ -155,6 +165,40 @@ struct AppSessionInjectionTests {
         } else {
             Issue.record("Expected an upcoming calendar glance")
         }
+    }
+
+    @Test func turningOnCalendarAsksAndKeepsThePreferenceWhenGranted() async {
+        let calendar = FakeCalendar()
+        let session = makeSession(calendar: calendar, weather: FakeWeather(), location: FakeLocation())
+        await session.setShowCalendarEvents(true)
+        #expect(calendar.eventsGranted)
+        #expect(session.showCalendarEvents)
+    }
+
+    @Test func turningOnLocalWeatherAsksLocation() async {
+        let location = FakeLocation()
+        let weather = FakeWeather()
+        let session = makeSession(calendar: FakeCalendar(), weather: weather, location: location)
+        #expect(weather.refreshCount == 0)
+        await session.setUseLocalWeather(false)
+        #expect(weather.refreshCount == 0)
+        await session.setUseLocalWeather(true)
+        #expect(location.didRequest)
+        #expect(session.useLocalWeather)
+        #expect(weather.refreshCount == 1)
+        if case .gps = session.effectiveFix {
+            // Fake grants GPS on request.
+        } else {
+            Issue.record("Expected GPS fix after local weather is on")
+        }
+        await session.setUseLocalWeather(false)
+        #expect(weather.refreshCount == 1)
+        if case .timeZone = session.effectiveFix {
+            // Time zone sky when the toggle is off. No forecast for the equator.
+        } else {
+            Issue.record("Expected time zone fix when local weather is off")
+        }
+        #expect(session.weatherStatus == .approximate)
     }
 
     @Test func weatherOverrideAndPauseComeFromInjectedCollaborators() {
@@ -259,8 +303,14 @@ private final class FakeCalendar: ObservableObject, CalendarReading {
     @Published var remindersGranted = false
     @Published var lastError: String?
     var accessGranted: Bool { eventsGranted || remindersGranted }
+    var canRequestCalendarAccess = true
+    var grantOnRequest = true
     func start() {}
-    func requestAccessAndRefresh() async { eventsGranted = true }
+    func requestAccessAndRefresh() async {
+        guard grantOnRequest else { return }
+        eventsGranted = true
+        canRequestCalendarAccess = false
+    }
     func refresh() async {}
 }
 
@@ -270,7 +320,10 @@ private final class FakeWeather: ObservableObject, WeatherFetching {
     @Published var lastUpdated: Date?
     @Published var lastError: String?
     @Published var lastWMOCode: Int?
-    func refresh(latitude: Double, longitude: Double, force: Bool) async {}
+    private(set) var refreshCount = 0
+    func refresh(latitude: Double, longitude: Double, force: Bool) async {
+        refreshCount += 1
+    }
     func failNextRefresh() async { lastError = "Injected weather failure" }
 }
 
@@ -282,8 +335,13 @@ private final class FakeLocation: ObservableObject, LocationProviding {
     var latitude: Double { fix.weatherLatitude }
     var longitude: Double { fix.longitude }
     var authorized: Bool { access.canRead }
+    var didRequest = false
     func start() {}
-    func request() {}
+    func request() {
+        didRequest = true
+        access = .granted
+        fix = .gps(latitude: 37.7, longitude: -122.4)
+    }
 }
 
 struct SceneMotionTests {

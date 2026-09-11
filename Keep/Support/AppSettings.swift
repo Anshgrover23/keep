@@ -7,6 +7,8 @@ protocol SettingsStore: AnyObject {
     var pauseOnLowPower: Bool { get set }
     var intentionText: String { get set }
     var intentionDay: String { get set }
+    var showCalendarEvents: Bool { get set }
+    var useLocalWeather: Bool { get set }
 }
 
 @MainActor
@@ -30,6 +32,8 @@ final class AppSettings: SettingsStore {
         static let pauseLowPower = "keep.pauseLowPower"
         static let intentionText = "keep.intention.text"
         static let intentionDay = "keep.intention.day"
+        static let showCalendarEvents = "keep.showCalendarEvents"
+        static let useLocalWeather = "keep.useLocalWeather"
     }
 
     var schemaVersion: Int {
@@ -69,8 +73,18 @@ final class AppSettings: SettingsStore {
         set { defaults.set(newValue, forKey: Key.intentionDay) }
     }
 
+    var showCalendarEvents: Bool {
+        get { defaults.object(forKey: Key.showCalendarEvents) as? Bool ?? false }
+        set { defaults.set(newValue, forKey: Key.showCalendarEvents) }
+    }
+
+    var useLocalWeather: Bool {
+        get { defaults.object(forKey: Key.useLocalWeather) as? Bool ?? false }
+        set { defaults.set(newValue, forKey: Key.useLocalWeather) }
+    }
+
     func resetForTests() {
-        [Key.schemaVersion, Key.didOnboard, Key.pauseFullscreen, Key.pauseLowPower, Key.intentionText, Key.intentionDay]
+        [Key.schemaVersion, Key.didOnboard, Key.pauseFullscreen, Key.pauseLowPower, Key.intentionText, Key.intentionDay, Key.showCalendarEvents, Key.useLocalWeather]
             .forEach { defaults.removeObject(forKey: $0) }
     }
 }

@@ -41,8 +41,15 @@ enum CalendarGlance: Equatable, Sendable {
     case upcoming(caption: String, title: String)
     case empty
     case notGranted
+    case off
 
-    static func resolve(accessGranted: Bool, nextItem: MemoryItem?, now: Date) -> CalendarGlance {
+    static func resolve(
+        wantsEvents: Bool,
+        accessGranted: Bool,
+        nextItem: MemoryItem?,
+        now: Date
+    ) -> CalendarGlance {
+        guard wantsEvents else { return .off }
         if let nextItem {
             return .upcoming(caption: nextItem.caption(now: now), title: nextItem.title)
         }
@@ -51,12 +58,12 @@ enum CalendarGlance: Equatable, Sendable {
 
     var emptyLine: String? {
         switch self {
-        case .upcoming:
+        case .upcoming, .off:
             return nil
         case .empty:
             return "Nothing upcoming. The day can stay quiet."
         case .notGranted:
-            return "Keep can show your next event."
+            return "Keep can show your next event from Calendar."
         }
     }
 }

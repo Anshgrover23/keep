@@ -25,7 +25,7 @@ extension AppSession {
         if let phase {
             clockAnchor = SolarEngine.date(
                 representing: phase,
-                observer: location.fix.solarObserver
+                observer: effectiveFix.solarObserver
             )
             clockPinnedAt = Date()
         } else {
@@ -54,8 +54,8 @@ extension AppSession {
         Task {
             await weather.failNextRefresh()
             await weather.refresh(
-                latitude: location.latitude,
-                longitude: location.longitude,
+                latitude: effectiveFix.weatherLatitude,
+                longitude: effectiveFix.longitude,
                 force: true
             )
         }

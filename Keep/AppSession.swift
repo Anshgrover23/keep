@@ -60,13 +60,24 @@ final class AppSession: ObservableObject {
         WeatherStatus.resolve(
             lastUpdated: weather.lastUpdated,
             lastError: weather.lastError,
-            fix: location.fix
+            fix: effectiveFix
         )
+    }
+
+    var showCalendarEvents: Bool { settings.showCalendarEvents }
+    var useLocalWeather: Bool { settings.useLocalWeather }
+
+    var effectiveFix: LocationFix {
+        guard useLocalWeather else {
+            return .timeZone(longitude: TimezoneLongitude.degrees(timeZone: .current, at: Date()))
+        }
+        return location.fix
     }
 
     /// Extra glance uses wall clock `Date()`, not Lab-pinned `effectiveDate`.
     var calendarGlance: CalendarGlance {
         CalendarGlance.resolve(
+            wantsEvents: showCalendarEvents || memoryOverride != nil,
             accessGranted: calendar.accessGranted,
             nextItem: effectiveNextItem,
             now: Date()
@@ -75,7 +86,9 @@ final class AppSession: ObservableObject {
 
     var effectiveNextItem: MemoryItem? {
         if hideMemory { return nil }
-        return memoryOverride ?? calendar.nextItem
+        if let memoryOverride { return memoryOverride }
+        guard showCalendarEvents else { return nil }
+        return calendar.nextItem
     }
 
     var menuCaption: String {
@@ -126,13 +139,18 @@ final class AppSession: ObservableObject {
         self.power = power
         self.wallpaper = wallpaper
         self.activation = activation
-        solar = SolarEngine.context(
-            at: Date(),
-            observer: location.fix.solarObserver
-        )
         didOnboard = settings.didOnboard
         power.pauseWhenFullscreen = settings.pauseWhenFullscreen
         power.pauseOnLowPower = settings.pauseOnLowPower
+        let observer: SolarObserver
+        if settings.useLocalWeather {
+            observer = location.fix.solarObserver
+        } else {
+            observer = LocationFix.timeZone(
+                longitude: TimezoneLongitude.degrees(timeZone: .current, at: Date())
+            ).solarObserver
+        }
+        solar = SolarEngine.context(at: Date(), observer: observer)
     }
 
     /// `observeSystem` false keeps tests from opening wallpaper windows or EventKit.
@@ -143,7 +161,11 @@ final class AppSession: ObservableObject {
 
         calendar.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &cancellables)
         weather.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &cancellables)
-        location.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &cancellables)
+        location.objectWillChange.sink { [weak self] _ in
+            guard let self else { return }
+            self.reconcileLocationPreference()
+            self.objectWillChange.send()
+        }.store(in: &cancellables)
         intention.objectWillChange.sink { [weak self] _ in self?.objectWillChange.send() }.store(in: &cancellables)
         power.objectWillChange.sink { [weak self] _ in
             guard let self else { return }
@@ -158,8 +180,12 @@ final class AppSession: ObservableObject {
         wallpaper.attach(session: self)
         wallpaper.start()
         wallpaper.syncLifecycle()
-        calendar.start()
-        location.start()
+        if showCalendarEvents {
+            calendar.start()
+        }
+        if useLocalWeather {
+            location.start()
+        }
         power.start()
         startWeatherPolling()
 
@@ -173,7 +199,10 @@ final class AppSession: ObservableObject {
         Timer.publish(every: Self.calendarPollInterval, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
-                Task { await self?.calendar.refresh() }
+                Task {
+                    guard let self, self.showCalendarEvents else { return }
+                    await self.calendar.refresh()
+                }
             }
             .store(in: &cancellables)
     }
@@ -193,6 +222,54 @@ final class AppSession: ObservableObject {
         power.pauseOnLowPower = value
         settings.pauseOnLowPower = value
         objectWillChange.send()
+    }
+
+    func setShowCalendarEvents(_ on: Bool) async {
+        if !on {
+            settings.showCalendarEvents = false
+            objectWillChange.send()
+            return
+        }
+        settings.showCalendarEvents = true
+        objectWillChange.send()
+        calendar.start()
+        await calendar.requestAccessAndRefresh()
+        if !calendar.accessGranted {
+            settings.showCalendarEvents = false
+            objectWillChange.send()
+        }
+    }
+
+    func setUseLocalWeather(_ on: Bool) async {
+        if !on {
+            settings.useLocalWeather = false
+            refreshSolar()
+            await refreshWeatherFromEffectiveFix(force: true)
+            objectWillChange.send()
+            return
+        }
+        settings.useLocalWeather = true
+        objectWillChange.send()
+        location.request()
+        if location.access != .notDetermined, !location.authorized {
+            settings.useLocalWeather = false
+            objectWillChange.send()
+            return
+        }
+        await refreshWeatherFromEffectiveFix(force: true)
+        refreshSolar()
+        objectWillChange.send()
+    }
+
+    private func reconcileLocationPreference() {
+        guard useLocalWeather else { return }
+        if location.access == .denied || location.access == .restricted {
+            settings.useLocalWeather = false
+        }
+        refreshSolar()
+        if effectiveFix.isMeasured {
+            Task { await refreshWeatherFromEffectiveFix(force: true) }
+        }
     }
 
     func finishOnboarding() {
@@ -240,7 +317,7 @@ final class AppSession: ObservableObject {
     func refreshSolar(at date: Date = Date()) {
         solar = SolarEngine.context(
             at: effectiveDate(from: date),
-            observer: location.fix.solarObserver
+            observer: effectiveFix.solarObserver
         )
     }
 
@@ -248,8 +325,9 @@ final class AppSession: ObservableObject {
     private var lastWeatherLongitude: Double?
 
     private func refreshWeatherIfLocationMoved() {
-        let latitude = location.latitude
-        let longitude = location.longitude
+        guard effectiveFix.isMeasured else { return }
+        let latitude = effectiveFix.weatherLatitude
+        let longitude = effectiveFix.longitude
         if let lastWeatherLatitude, let lastWeatherLongitude,
            hypot(latitude - lastWeatherLatitude, longitude - lastWeatherLongitude) < Self.weatherMoveEpsilonDegrees {
             return
@@ -261,25 +339,24 @@ final class AppSession: ObservableObject {
         }
     }
 
+    private func refreshWeatherFromEffectiveFix(force: Bool) async {
+        guard effectiveFix.isMeasured else { return }
+        let latitude = effectiveFix.weatherLatitude
+        let longitude = effectiveFix.longitude
+        lastWeatherLatitude = latitude
+        lastWeatherLongitude = longitude
+        await weather.refresh(latitude: latitude, longitude: longitude, force: force)
+    }
+
     private func startWeatherPolling() {
         weatherPoll?.cancel()
         weatherPoll = Task { [weak self] in
             guard let session = self else { return }
-            await session.weather.refresh(
-                latitude: session.location.latitude,
-                longitude: session.location.longitude,
-                force: true
-            )
-            session.lastWeatherLatitude = session.location.latitude
-            session.lastWeatherLongitude = session.location.longitude
+            await session.refreshWeatherFromEffectiveFix(force: true)
             while !Task.isCancelled {
                 try? await Task.sleep(for: .seconds(Self.weatherPollInterval))
                 guard let session = self else { return }
-                await session.weather.refresh(
-                    latitude: session.location.latitude,
-                    longitude: session.location.longitude,
-                    force: false
-                )
+                await session.refreshWeatherFromEffectiveFix(force: false)
             }
         }
     }

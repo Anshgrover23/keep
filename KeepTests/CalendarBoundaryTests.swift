@@ -350,6 +350,18 @@ struct CalendarServiceBoundaryTests {
         await service.requestAccessAndRefresh()
         #expect(catalog.didRequestAccess)
         #expect(service.nextItem?.title == "After prompt")
+        #expect(service.canRequestCalendarAccess == false)
+    }
+
+    @Test func canRequestCalendarAccessWhileEitherSideIsUndetermined() async {
+        let catalog = FakeCatalog(
+            eventsAccess: .notDetermined,
+            remindersAccess: .denied,
+            snapshot: .empty(eventsAccess: .notDetermined, remindersAccess: .denied)
+        )
+        let service = CalendarService(catalog: catalog)
+        await service.refresh()
+        #expect(service.canRequestCalendarAccess)
     }
 
     @Test func reminderTimeoutIsDistinctFromAnEmptyList() async {

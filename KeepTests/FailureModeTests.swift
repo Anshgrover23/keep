@@ -62,6 +62,8 @@ struct SettingsDefaultsAndRelaunchTests {
         #expect(settings.pauseOnLowPower == false)
         #expect(settings.intentionText.isEmpty)
         #expect(settings.intentionDay.isEmpty)
+        #expect(settings.showCalendarEvents == false)
+        #expect(settings.useLocalWeather == false)
         #expect(settings.schemaVersion == AppSettings.currentSchemaVersion)
     }
 
@@ -97,6 +99,8 @@ struct SettingsDefaultsAndRelaunchTests {
         first.pauseOnLowPower = false
         first.intentionText = "Ship Keep"
         first.intentionDay = "2026-09-11"
+        first.showCalendarEvents = true
+        first.useLocalWeather = true
 
         let relaunched = AppSettings(defaults: UserDefaults(suiteName: suite)!)
         #expect(relaunched.didOnboard)
@@ -104,6 +108,8 @@ struct SettingsDefaultsAndRelaunchTests {
         #expect(relaunched.pauseOnLowPower == false)
         #expect(relaunched.intentionText == "Ship Keep")
         #expect(relaunched.intentionDay == "2026-09-11")
+        #expect(relaunched.showCalendarEvents)
+        #expect(relaunched.useLocalWeather)
         #expect(relaunched.schemaVersion == AppSettings.currentSchemaVersion)
     }
 
@@ -181,6 +187,7 @@ private final class FailureModeCalendar: ObservableObject, CalendarReading {
     @Published var remindersGranted = false
     @Published var lastError: String?
     var accessGranted: Bool { false }
+    var canRequestCalendarAccess: Bool { false }
     func start() {}
     func requestAccessAndRefresh() async {}
     func refresh() async {}

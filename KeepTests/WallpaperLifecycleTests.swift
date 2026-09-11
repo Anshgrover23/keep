@@ -232,6 +232,7 @@ private final class SessionPauseCalendar: ObservableObject, CalendarReading {
     @Published var remindersGranted = false
     @Published var lastError: String?
     var accessGranted: Bool { false }
+    var canRequestCalendarAccess: Bool { false }
     func start() {}
     func requestAccessAndRefresh() async {}
     func refresh() async {}
