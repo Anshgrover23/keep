@@ -148,10 +148,12 @@ struct AppSessionInjectionTests {
         calendar.grantOnRequest = false
         let session = makeSession(calendar: calendar, weather: FakeWeather(), location: FakeLocation())
         #expect(session.calendarGlance == .off)
+        #expect(session.calendarGlance.emptyLine == "Keep can show your next event from Calendar.")
 
         await session.setShowCalendarEvents(true)
         #expect(session.showCalendarEvents == false)
         #expect(session.calendarGlance == .off)
+        #expect(session.calendarGlance.emptyLine == "Keep can show your next event from Calendar.")
 
         calendar.grantOnRequest = true
         await session.setShowCalendarEvents(true)
@@ -173,6 +175,33 @@ struct AppSessionInjectionTests {
         await session.setShowCalendarEvents(true)
         #expect(calendar.eventsGranted)
         #expect(session.showCalendarEvents)
+    }
+
+    @Test func calendarToggleSnapsOffWhenAccessGoesAway() async {
+        let calendar = FakeCalendar()
+        let session = makeSession(calendar: calendar, weather: FakeWeather(), location: FakeLocation())
+        session.start(observeSystem: false)
+        await session.setShowCalendarEvents(true)
+        #expect(session.showCalendarEvents)
+        #expect(session.calendarGlance == .empty)
+
+        calendar.grantedOnRefresh = false
+        await session.syncCalendarAccessWithSystem()
+        #expect(session.showCalendarEvents == false)
+        #expect(session.calendarGlance == .off)
+        #expect(session.calendarGlance.emptyLine == "Keep can show your next event from Calendar.")
+    }
+
+    @Test func calendarToggleFollowsEventsGrantNotReminders() async {
+        let calendar = FakeCalendar()
+        let session = makeSession(calendar: calendar, weather: FakeWeather(), location: FakeLocation())
+        session.start(observeSystem: false)
+        await session.setShowCalendarEvents(true)
+        calendar.eventsGranted = false
+        calendar.remindersGranted = true
+        calendar.grantOnRequest = false
+        await session.syncCalendarAccessWithSystem()
+        #expect(session.showCalendarEvents == false)
     }
 
     @Test func turningOnLocalWeatherAsksLocation() async {
@@ -305,13 +334,23 @@ private final class FakeCalendar: ObservableObject, CalendarReading {
     var accessGranted: Bool { eventsGranted || remindersGranted }
     var canRequestCalendarAccess = true
     var grantOnRequest = true
+    var grantedOnRefresh: Bool?
     func start() {}
     func requestAccessAndRefresh() async {
+        if let grantedOnRefresh {
+            eventsGranted = grantedOnRefresh
+            remindersGranted = grantedOnRefresh
+            return
+        }
         guard grantOnRequest else { return }
         eventsGranted = true
         canRequestCalendarAccess = false
     }
-    func refresh() async {}
+    func refresh() async {
+        guard let grantedOnRefresh else { return }
+        eventsGranted = grantedOnRefresh
+        remindersGranted = grantedOnRefresh
+    }
 }
 
 @MainActor
