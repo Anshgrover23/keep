@@ -1,8 +1,9 @@
-import EventKit
+@preconcurrency import EventKit
 import Foundation
 import os
 
 /// EventKit lives here only. One `EKEventStore` per catalog / app session.
+/// `@preconcurrency` is required for Swift 6 on Xcode 16.4: access APIs are nonisolated.
 @MainActor
 protocol CalendarCataloging: AnyObject {
     func currentAccess() -> (events: CalendarAccess, reminders: CalendarAccess)

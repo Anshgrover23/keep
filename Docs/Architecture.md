@@ -140,7 +140,7 @@ CoreLocation Lab (deny, grant without relaunch, approximate weather with denied 
 
 ## Swift 6 concurrency
 
-`SWIFT_VERSION` is **6.0** for Keep and KeepTests. There is no `@unchecked Sendable` and no `nonisolated(unsafe)`.
+`SWIFT_VERSION` is **6.0** for Keep and KeepTests. There is no `@unchecked Sendable` and no `nonisolated(unsafe)`. `EventKitCatalog` imports EventKit with `@preconcurrency` so Xcode 16.4 does not treat `requestFullAccessToEvents` as sending the main actor store.
 
 | Boundary | Isolation | Why |
 | --- | --- | --- |
