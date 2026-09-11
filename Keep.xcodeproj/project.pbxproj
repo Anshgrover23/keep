@@ -1,0 +1,557 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A100000000000001 /* KeepApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000001 /* KeepApp.swift */; };
+		A100000000000002 /* AppSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000002 /* AppSession.swift */; };
+		A100000000000003 /* WallpaperController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000003 /* WallpaperController.swift */; };
+		A100000000000004 /* WallpaperRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000004 /* WallpaperRootView.swift */; };
+		A100000000000005 /* DaySceneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000005 /* DaySceneView.swift */; };
+		A100000000000006 /* WeatherParticles.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000006 /* WeatherParticles.swift */; };
+		A100000000000007 /* MemoryOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000007 /* MemoryOverlay.swift */; };
+		A100000000000008 /* DayPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000008 /* DayPhase.swift */; };
+		A100000000000009 /* CalendarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000009 /* CalendarService.swift */; };
+		A10000000000000A /* IntentionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000A /* IntentionStore.swift */; };
+		A10000000000000B /* LocationProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000B /* LocationProvider.swift */; };
+		A10000000000000C /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000C /* WeatherService.swift */; };
+		A10000000000000D /* PowerMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000D /* PowerMonitor.swift */; };
+		A10000000000000E /* MenuBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000E /* MenuBarView.swift */; };
+		A10000000000000F /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000F /* OnboardingView.swift */; };
+		A100000000000010 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000010 /* SettingsView.swift */; };
+		A100000000000012 /* LabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000014 /* LabView.swift */; };
+		A100000000000013 /* KeepLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000015 /* KeepLog.swift */; };
+		A100000000000014 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000016 /* HTTPClient.swift */; };
+		A100000000000015 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000017 /* AppSettings.swift */; };
+		A100000000000018 /* FrameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000018 /* FrameClock.swift */; };
+		A100000000000019 /* MemoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000019 /* MemoryItem.swift */; };
+		A10000000000001A /* SessionBoundaries.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000001A /* SessionBoundaries.swift */; };
+		A10000000000001C /* SkyAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000001C /* SkyAppearance.swift */; };
+		A10000000000001D /* NextMemoryPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000001D /* NextMemoryPolicy.swift */; };
+		A10000000000001E /* EventKitCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000001E /* EventKitCatalog.swift */; };
+		A10000000000001F /* LocationFix.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000001F /* LocationFix.swift */; };
+		A100000000000020 /* WallpaperDisplayLinkPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000020 /* WallpaperDisplayLinkPolicy.swift */; };
+		A100000000000021 /* FullscreenClassification.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000021 /* FullscreenClassification.swift */; };
+		A100000000000023 /* WeatherStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000023 /* WeatherStatus.swift */; };
+		A100000000000024 /* ReminderFetch.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000024 /* ReminderFetch.swift */; };
+		A100000000000025 /* AppSession+Lab.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000025 /* AppSession+Lab.swift */; };
+		A200000000000001 /* KeepTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B200000000000001 /* KeepTests.swift */; };
+		A200000000000002 /* HTTPBoundaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B200000000000002 /* HTTPBoundaryTests.swift */; };
+		A200000000000003 /* WeatherBoundaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B200000000000003 /* WeatherBoundaryTests.swift */; };
+		A200000000000004 /* CalendarBoundaryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B200000000000004 /* CalendarBoundaryTests.swift */; };
+		A200000000000005 /* LocationSolarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B200000000000005 /* LocationSolarTests.swift */; };
+		A200000000000006 /* WallpaperLifecycleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B200000000000006 /* WallpaperLifecycleTests.swift */; };
+		A200000000000007 /* FullscreenClassificationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B200000000000007 /* FullscreenClassificationTests.swift */; };
+		A200000000000008 /* FailureModeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B200000000000008 /* FailureModeTests.swift */; };
+		A100000000000011 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B100000000000011 /* Assets.xcassets */; };
+		A100000000000022 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = B100000000000022 /* PrivacyInfo.xcprivacy */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B000000000000001 /* Keep.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Keep.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B000000000000002 /* KeepTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KeepTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B100000000000001 /* KeepApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepApp.swift; sourceTree = "<group>"; };
+		B100000000000002 /* AppSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSession.swift; sourceTree = "<group>"; };
+		B100000000000003 /* WallpaperController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperController.swift; sourceTree = "<group>"; };
+		B100000000000004 /* WallpaperRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperRootView.swift; sourceTree = "<group>"; };
+		B100000000000005 /* DaySceneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaySceneView.swift; sourceTree = "<group>"; };
+		B100000000000006 /* WeatherParticles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherParticles.swift; sourceTree = "<group>"; };
+		B100000000000007 /* MemoryOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryOverlay.swift; sourceTree = "<group>"; };
+		B100000000000008 /* DayPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayPhase.swift; sourceTree = "<group>"; };
+		B100000000000009 /* CalendarService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarService.swift; sourceTree = "<group>"; };
+		B10000000000000A /* IntentionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentionStore.swift; sourceTree = "<group>"; };
+		B10000000000000B /* LocationProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationProvider.swift; sourceTree = "<group>"; };
+		B10000000000000C /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
+		B10000000000000D /* PowerMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerMonitor.swift; sourceTree = "<group>"; };
+		B10000000000000E /* MenuBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarView.swift; sourceTree = "<group>"; };
+		B10000000000000F /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		B100000000000010 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B100000000000014 /* LabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LabView.swift; sourceTree = "<group>"; };
+		B100000000000015 /* KeepLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepLog.swift; sourceTree = "<group>"; };
+		B100000000000016 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		B100000000000017 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		B100000000000018 /* FrameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameClock.swift; sourceTree = "<group>"; };
+		B100000000000019 /* MemoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryItem.swift; sourceTree = "<group>"; };
+		B10000000000001A /* SessionBoundaries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBoundaries.swift; sourceTree = "<group>"; };
+		B10000000000001C /* SkyAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyAppearance.swift; sourceTree = "<group>"; };
+		B10000000000001D /* NextMemoryPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextMemoryPolicy.swift; sourceTree = "<group>"; };
+		B10000000000001E /* EventKitCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventKitCatalog.swift; sourceTree = "<group>"; };
+		B10000000000001F /* LocationFix.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationFix.swift; sourceTree = "<group>"; };
+		B100000000000020 /* WallpaperDisplayLinkPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperDisplayLinkPolicy.swift; sourceTree = "<group>"; };
+		B100000000000021 /* FullscreenClassification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenClassification.swift; sourceTree = "<group>"; };
+		B100000000000023 /* WeatherStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherStatus.swift; sourceTree = "<group>"; };
+		B100000000000024 /* ReminderFetch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderFetch.swift; sourceTree = "<group>"; };
+		B100000000000025 /* AppSession+Lab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppSession+Lab.swift"; sourceTree = "<group>"; };
+		B200000000000001 /* KeepTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeepTests.swift; sourceTree = "<group>"; };
+		B200000000000002 /* HTTPBoundaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPBoundaryTests.swift; sourceTree = "<group>"; };
+		B200000000000003 /* WeatherBoundaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherBoundaryTests.swift; sourceTree = "<group>"; };
+		B200000000000004 /* CalendarBoundaryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarBoundaryTests.swift; sourceTree = "<group>"; };
+		B200000000000005 /* LocationSolarTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSolarTests.swift; sourceTree = "<group>"; };
+		B200000000000006 /* WallpaperLifecycleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallpaperLifecycleTests.swift; sourceTree = "<group>"; };
+		B200000000000007 /* FullscreenClassificationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenClassificationTests.swift; sourceTree = "<group>"; };
+		B200000000000008 /* FailureModeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailureModeTests.swift; sourceTree = "<group>"; };
+		B100000000000011 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B100000000000012 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B100000000000013 /* Keep.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Keep.entitlements; sourceTree = "<group>"; };
+		B100000000000022 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C100000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D100000000000001 = {
+			isa = PBXGroup;
+			children = (
+				D100000000000002 /* Keep */,
+				D100000000000009 /* KeepTests */,
+				D100000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D100000000000002 /* Keep */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000001 /* KeepApp.swift */,
+				B100000000000002 /* AppSession.swift */,
+				B100000000000025 /* AppSession+Lab.swift */,
+				D10000000000000A /* Domain */,
+				D10000000000000B /* Session */,
+				D100000000000004 /* Wallpaper */,
+				D100000000000005 /* Scene */,
+				D100000000000006 /* Data */,
+				D100000000000007 /* Views */,
+				D100000000000008 /* Support */,
+				B100000000000011 /* Assets.xcassets */,
+				B100000000000012 /* Info.plist */,
+				B100000000000022 /* PrivacyInfo.xcprivacy */,
+				B100000000000013 /* Keep.entitlements */,
+			);
+			path = Keep;
+			sourceTree = "<group>";
+		};
+		D100000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B000000000000001 /* Keep.app */,
+				B000000000000002 /* KeepTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D100000000000004 /* Wallpaper */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000003 /* WallpaperController.swift */,
+				B100000000000004 /* WallpaperRootView.swift */,
+			);
+			path = Wallpaper;
+			sourceTree = "<group>";
+		};
+		D100000000000005 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000005 /* DaySceneView.swift */,
+				B100000000000006 /* WeatherParticles.swift */,
+				B100000000000007 /* MemoryOverlay.swift */,
+				B10000000000001C /* SkyAppearance.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		D100000000000006 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000008 /* DayPhase.swift */,
+				B100000000000009 /* CalendarService.swift */,
+				B10000000000001E /* EventKitCatalog.swift */,
+				B100000000000024 /* ReminderFetch.swift */,
+				B10000000000000A /* IntentionStore.swift */,
+				B10000000000000B /* LocationProvider.swift */,
+				B10000000000000C /* WeatherService.swift */,
+				B10000000000000D /* PowerMonitor.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		D100000000000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000000E /* MenuBarView.swift */,
+				B10000000000000F /* OnboardingView.swift */,
+				B100000000000010 /* SettingsView.swift */,
+				B100000000000014 /* LabView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D100000000000008 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000015 /* KeepLog.swift */,
+				B100000000000016 /* HTTPClient.swift */,
+				B100000000000017 /* AppSettings.swift */,
+				B100000000000018 /* FrameClock.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		D100000000000009 /* KeepTests */ = {
+			isa = PBXGroup;
+			children = (
+				B200000000000001 /* KeepTests.swift */,
+				B200000000000002 /* HTTPBoundaryTests.swift */,
+				B200000000000003 /* WeatherBoundaryTests.swift */,
+				B200000000000004 /* CalendarBoundaryTests.swift */,
+				B200000000000005 /* LocationSolarTests.swift */,
+				B200000000000006 /* WallpaperLifecycleTests.swift */,
+				B200000000000007 /* FullscreenClassificationTests.swift */,
+				B200000000000008 /* FailureModeTests.swift */,
+			);
+			path = KeepTests;
+			sourceTree = "<group>";
+		};
+		D10000000000000A /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				B100000000000019 /* MemoryItem.swift */,
+				B10000000000001D /* NextMemoryPolicy.swift */,
+				B10000000000001F /* LocationFix.swift */,
+				B100000000000020 /* WallpaperDisplayLinkPolicy.swift */,
+				B100000000000021 /* FullscreenClassification.swift */,
+				B100000000000023 /* WeatherStatus.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		D10000000000000B /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				B10000000000001A /* SessionBoundaries.swift */,
+			);
+			path = Session;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		E100000000000001 /* Keep */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F100000000000003 /* Build configuration list for PBXNativeTarget "Keep" */;
+			buildPhases = (
+				C100000000000002 /* Sources */,
+				C100000000000001 /* Frameworks */,
+				C100000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Keep;
+			productName = Keep;
+			productReference = B000000000000001 /* Keep.app */;
+			productType = "com.apple.product-type.application";
+		};
+		E100000000000002 /* KeepTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F100000000000005 /* Build configuration list for PBXNativeTarget "KeepTests" */;
+			buildPhases = (
+				C100000000000004 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				T100000000000001 /* PBXTargetDependency */,
+			);
+			name = KeepTests;
+			productName = KeepTests;
+			productReference = B000000000000002 /* KeepTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		E100000000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					E100000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					E100000000000002 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = E100000000000001;
+					};
+				};
+			};
+			buildConfigurationList = F100000000000001 /* Build configuration list for PBXProject "Keep" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D100000000000001;
+			productRefGroup = D100000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				E100000000000001 /* Keep */,
+				E100000000000002 /* KeepTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C100000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A100000000000011 /* Assets.xcassets in Resources */,
+				A100000000000022 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXContainerItemProxy section */
+		P100000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E100000000000000 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E100000000000001;
+			remoteInfo = Keep;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		T100000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E100000000000001 /* Keep */;
+			targetProxy = P100000000000001 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C100000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A100000000000001 /* KeepApp.swift in Sources */,
+				A100000000000002 /* AppSession.swift in Sources */,
+				A100000000000025 /* AppSession+Lab.swift in Sources */,
+				A100000000000003 /* WallpaperController.swift in Sources */,
+				A100000000000004 /* WallpaperRootView.swift in Sources */,
+				A100000000000005 /* DaySceneView.swift in Sources */,
+				A100000000000006 /* WeatherParticles.swift in Sources */,
+				A100000000000007 /* MemoryOverlay.swift in Sources */,
+				A100000000000008 /* DayPhase.swift in Sources */,
+				A100000000000009 /* CalendarService.swift in Sources */,
+				A10000000000000A /* IntentionStore.swift in Sources */,
+				A10000000000000B /* LocationProvider.swift in Sources */,
+				A10000000000000C /* WeatherService.swift in Sources */,
+				A10000000000000D /* PowerMonitor.swift in Sources */,
+				A10000000000000E /* MenuBarView.swift in Sources */,
+				A10000000000000F /* OnboardingView.swift in Sources */,
+				A100000000000010 /* SettingsView.swift in Sources */,
+				A100000000000012 /* LabView.swift in Sources */,
+				A100000000000013 /* KeepLog.swift in Sources */,
+				A100000000000014 /* HTTPClient.swift in Sources */,
+				A100000000000015 /* AppSettings.swift in Sources */,
+				A100000000000018 /* FrameClock.swift in Sources */,
+				A100000000000019 /* MemoryItem.swift in Sources */,
+				A10000000000001A /* SessionBoundaries.swift in Sources */,
+				A10000000000001C /* SkyAppearance.swift in Sources */,
+				A10000000000001D /* NextMemoryPolicy.swift in Sources */,
+				A10000000000001E /* EventKitCatalog.swift in Sources */,
+				A100000000000024 /* ReminderFetch.swift in Sources */,
+				A10000000000001F /* LocationFix.swift in Sources */,
+				A100000000000020 /* WallpaperDisplayLinkPolicy.swift in Sources */,
+				A100000000000021 /* FullscreenClassification.swift in Sources */,
+				A100000000000023 /* WeatherStatus.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C100000000000004 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A200000000000001 /* KeepTests.swift in Sources */,
+				A200000000000002 /* HTTPBoundaryTests.swift in Sources */,
+				A200000000000003 /* WeatherBoundaryTests.swift in Sources */,
+				A200000000000004 /* CalendarBoundaryTests.swift in Sources */,
+				A200000000000005 /* LocationSolarTests.swift in Sources */,
+				A200000000000006 /* WallpaperLifecycleTests.swift in Sources */,
+				A200000000000007 /* FullscreenClassificationTests.swift in Sources */,
+				A200000000000008 /* FailureModeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		F200000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		F200000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		F200000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Keep/Keep.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_TESTABILITY = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Keep/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.keep.desktop;
+				PRODUCT_NAME = Keep;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		F200000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Keep/Keep.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Keep/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.keep.desktop;
+				PRODUCT_NAME = Keep;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		F200000000000005 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.keep.desktop.tests;
+				PRODUCT_NAME = KeepTests;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Keep.app/Contents/MacOS/Keep";
+			};
+			name = Debug;
+		};
+		F200000000000006 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = app.keep.desktop.tests;
+				PRODUCT_NAME = KeepTests;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 6.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Keep.app/Contents/MacOS/Keep";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F100000000000001 /* Build configuration list for PBXProject "Keep" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F200000000000001 /* Debug */,
+				F200000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F100000000000003 /* Build configuration list for PBXNativeTarget "Keep" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F200000000000003 /* Debug */,
+				F200000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F100000000000005 /* Build configuration list for PBXNativeTarget "KeepTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F200000000000005 /* Debug */,
+				F200000000000006 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = E100000000000000 /* Project object */;
+}
