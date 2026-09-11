@@ -43,7 +43,7 @@ Custom video wallpaper, widgets, Screenpipe, contacts, streaks, iCloud, iOS comp
 Invitational. Optional means they can continue. Name what the grant enables. Do not threaten a skip.
 
 Right: toggle `Show events from Calendar`. Helper `Keep can show your next event from Calendar.` Turning it on asks Calendar and Reminders.
-Right: toggle `Use local weather`. Helper `Keep can use your location for weather and daylight where you are.` Turning it on asks Location.
+Right: toggle `Use local weather`. Helper `Keep can use your location for weather and daylight.` Turning it on asks Location.
 
 Empty calendar: quiet day. Calendar toggle off or not granted: `Keep can show your next event from Calendar.` The Calendar toggle stays on only after Calendar events can actually be read. Reminders can still feed the next line, but revoking Calendar snaps the toggle off. Denied grant does not prompt again. Turning the extra on then opens Calendar privacy so they can allow Keep. Keep probes `requestFullAccess` when it becomes active and when the extra opens, because EventKit can keep a stale granted status. Approximate weather is still weather. Helper text wraps.
 

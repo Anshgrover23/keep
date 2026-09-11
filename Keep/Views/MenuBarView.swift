@@ -123,7 +123,7 @@ struct KeepDataToggles: View {
                     set: { on in Task { await session.setUseLocalWeather(on) } }
                 )
             )
-            .accessibilityHint("Keep can use your location for weather and daylight where you are.")
+            .accessibilityHint("Keep can use your location for weather and daylight.")
             Toggle(
                 "Show Keep on the desktop",
                 isOn: Binding(
