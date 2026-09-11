@@ -8,6 +8,24 @@ enum CalendarAccess: Equatable, Sendable {
     case writeOnly
 
     var canRead: Bool { self == .granted }
+
+    /// `requestFullAccess` can return false while `authorizationStatus` still says granted.
+    static func afterPrompt(success: Bool, status: CalendarAccess) -> CalendarAccess {
+        if success {
+            return status.canRead ? status : .granted
+        }
+        if status == .restricted { return .restricted }
+        if status == .writeOnly { return .writeOnly }
+        return .denied
+    }
+
+    /// Prefer a fresh live deny. Keep a probed deny when the process status is still stale granted.
+    static func combining(live: CalendarAccess, probed: CalendarAccess?) -> CalendarAccess {
+        guard let probed else { return live }
+        if !live.canRead { return live }
+        if !probed.canRead { return probed }
+        return live
+    }
 }
 
 /// EventKit free snapshot of one calendar event. Only fields Keep displays or filters on.

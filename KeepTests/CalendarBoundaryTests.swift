@@ -28,6 +28,14 @@ struct NextMemoryPolicyTests {
         #expect(CalendarAccess.granted.canRead)
     }
 
+    @Test func afterPromptTrustsFalseEvenWhenStatusStillSaysGranted() {
+        #expect(CalendarAccess.afterPrompt(success: false, status: .granted) == .denied)
+        #expect(CalendarAccess.afterPrompt(success: true, status: .granted) == .granted)
+        #expect(CalendarAccess.combining(live: .granted, probed: .denied) == .denied)
+        #expect(CalendarAccess.combining(live: .denied, probed: .denied) == .denied)
+        #expect(CalendarAccess.combining(live: .granted, probed: .granted) == .granted)
+    }
+
     @Test func emptyCalendarYieldsNoItem() {
         let snapshot = CalendarSnapshot.empty(eventsAccess: .granted, remindersAccess: .granted)
         #expect(NextMemoryPolicy.select(snapshot, at: Date(timeIntervalSince1970: 0), calendar: calendar) == nil)
