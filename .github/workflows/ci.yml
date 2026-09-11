@@ -13,3 +13,9 @@ jobs:
       - name: Test
         run: xcodebuild -project Keep.xcodeproj -scheme Keep -configuration Debug -derivedDataPath build/DerivedData -destination 'platform=macOS' test
 
+  build:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Release build
+        run: xcodebuild -project Keep.xcodeproj -scheme Keep -configuration Release -derivedDataPath build/DerivedData -destination 'platform=macOS' build
