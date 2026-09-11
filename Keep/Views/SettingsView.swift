@@ -50,8 +50,8 @@ struct SettingsView: View {
                         set: { on in Task { await session.setUseLocalWeather(on) } }
                     )
                 )
-                .accessibilityHint("Keep can use your location for weather and daylight where you are.")
-                Text("Keep can use your location for weather and daylight where you are.")
+                .accessibilityHint("Keep can use your location for weather and daylight.")
+                Text("Keep can use your location for weather and daylight.")
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityHidden(true)

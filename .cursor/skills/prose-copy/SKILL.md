@@ -33,6 +33,6 @@ Identifiers, URLs, ISO dates, CLI flags, YAML names, markdown table rules (`---`
 Name what the grant enables. Optional means they can continue.
 
 Right: `Keep can show your next event from Calendar.`
-Right: `Keep can use your location for weather and daylight where you are.`
+Right: `Keep can use your location for weather and daylight.`
 
 Empty calendar is a quiet day. Calendar off is an invitation. Approximate is time zone location, not an HTTP failure. Stale means last kind is kept. Unavailable means there is nothing useful to show.

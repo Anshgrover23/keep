@@ -61,8 +61,8 @@ struct OnboardingView: View {
                         set: { on in Task { await session.setUseLocalWeather(on) } }
                     )
                 )
-                .accessibilityHint("Keep can use your location for weather and daylight where you are.")
-                helper("Keep can use your location for weather and daylight where you are.")
+                .accessibilityHint("Keep can use your location for weather and daylight.")
+                helper("Keep can use your location for weather and daylight.")
             }
 
             HStack {
