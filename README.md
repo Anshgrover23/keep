@@ -1,6 +1,15 @@
-# Keep
 
-A macOS menu bar app whose wallpaper is a living day: local light and weather, plus the next calendar item and one daily intention.
+<h1 align="center">Keep</h1>
+
+<p align="center">
+	Beautiful, living sky on the desktop. Quiet, and built for a Mac you already use.
+</p>
+
+<img width="1440" height="1080" alt="Keep App preview" src="https://github.com/user-attachments/assets/2f02d27f-590e-4313-93e2-156a25db00db" />
+
+Keep is a macOS menu bar agent that shows the living sky on the wallpaper. It gives you local light, live weather, the next Calendar event, one intention for the day, and a quiet extra that stays in the menu bar.
+
+Use Keep for mornings at the desk, long work blocks, a quiet day on Calendar, dusk on the glass, and any moment where looking up should still feel like looking outside.
 
 ## Requirements
 
