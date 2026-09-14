@@ -201,7 +201,7 @@ struct LabView: View {
 
     private var intention: some View {
         Section("Today’s Keep") {
-            TextField("", text: $intentionDraft, prompt: Text("One thing not to forget"))
+            TextField("", text: $intentionDraft, prompt: Text("Today’s Keep"))
                 .labelsHidden()
                 .textFieldStyle(.roundedBorder)
                 .onSubmit { session.intention.set(intentionDraft) }

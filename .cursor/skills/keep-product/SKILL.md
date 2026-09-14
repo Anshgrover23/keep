@@ -30,7 +30,7 @@ The user can change this. Update this file when they do.
 * Pause: lock and sleep freeze the sky. Fullscreen and Low Power Mode only if Settings opt in. Lab can still freeze without hiding.
 * Display link: preferred 60 fps, range 60 to 120, unless the user asks otherwise.
 * Weather from Open Meteo only for a measured GPS fix. Time zone fallback does not fetch a forecast for the equator. Extra does not show approximate, stale, or unavailable weather lines. Settings shows Status. Last `WeatherKind` kept on HTTP failure. No HTTP codes on product UI.
-* Overlay titles: regular serif, not ultralight.
+* Overlay titles: regular serif, not ultralight. Ink follows phase and weather so rain, storm, and fog stay readable. Extra field prompt matches the Today’s Keep label.
 
 No feature expansion unless they ask.
 
