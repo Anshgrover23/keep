@@ -76,14 +76,22 @@ enum WeatherParticles {
         size: CGSize,
         date: Date,
         weather: WeatherKind,
-        reduceMotion: Bool
+        reduceMotion: Bool,
+        readability: SceneReadability = .wallpaper
     ) {
         guard SceneMotion.drawsPrecipitation(reduceMotion: reduceMotion) else { return }
         switch weather {
         case .rain, .storm:
-            rain(context: &context, size: size, date: date, storm: weather == .storm, reduceMotion: reduceMotion)
+            rain(
+                context: &context,
+                size: size,
+                date: date,
+                storm: weather == .storm,
+                reduceMotion: reduceMotion,
+                readability: readability
+            )
         case .snow:
-            snow(context: &context, size: size, date: date, reduceMotion: reduceMotion)
+            snow(context: &context, size: size, date: date, reduceMotion: reduceMotion, readability: readability)
         case .fog:
             break
         case .clear, .cloudy:
@@ -96,26 +104,29 @@ enum WeatherParticles {
         size: CGSize,
         date: Date,
         storm: Bool,
-        reduceMotion: Bool
+        reduceMotion: Bool,
+        readability: SceneReadability
     ) {
         let t = SceneMotion.timeInterval(from: date, reduceMotion: reduceMotion)
         let count = storm ? Rain.stormCount : Rain.showerCount
+        let scale = readability.particleScale
         var rng = SceneRNG(seed: Rain.seed, salt: SceneRNG.particleSalt)
         for i in 0..<count {
             let col = rng.next()
             let speed = Rain.baseSpeed + rng.next() * Rain.speedSpread
-            let length = Rain.baseLength + rng.next() * Rain.lengthSpread
-            let x = col * size.width + sin(t * Rain.swayPeriod + Double(i)) * Rain.swayAmplitude
+            let length = (Rain.baseLength + rng.next() * Rain.lengthSpread) * scale
+            let x = col * size.width + sin(t * Rain.swayPeriod + Double(i)) * Rain.swayAmplitude * scale
             let travel = (t * speed + rng.next() * size.height).truncatingRemainder(
-                dividingBy: size.height + Rain.wrapPadding
+                dividingBy: size.height + Rain.wrapPadding * scale
             )
-            let y = travel - Rain.yOffset
+            let y = travel - Rain.yOffset * scale
             var stroke = context
-            stroke.opacity = storm ? Rain.stormOpacity : Rain.showerOpacity
+            let baseOpacity = storm ? Rain.stormOpacity : Rain.showerOpacity
+            stroke.opacity = min(1, baseOpacity * readability.particleOpacityScale)
             var path = Path()
             path.move(to: CGPoint(x: x, y: y))
-            path.addLine(to: CGPoint(x: x + Rain.slant, y: y + length))
-            stroke.stroke(path, with: .color(.white), lineWidth: Rain.lineWidth)
+            path.addLine(to: CGPoint(x: x + Rain.slant * scale, y: y + length))
+            stroke.stroke(path, with: .color(.white), lineWidth: Rain.lineWidth * readability.particleStrokeScale)
         }
     }
 
@@ -123,22 +134,24 @@ enum WeatherParticles {
         context: inout GraphicsContext,
         size: CGSize,
         date: Date,
-        reduceMotion: Bool
+        reduceMotion: Bool,
+        readability: SceneReadability
     ) {
         let t = SceneMotion.timeInterval(from: date, reduceMotion: reduceMotion)
+        let scale = readability.particleScale
         var rng = SceneRNG(seed: Snow.seed, salt: SceneRNG.particleSalt)
         for i in 0..<Snow.count {
             let col = rng.next()
             let speed = Snow.baseSpeed + rng.next() * Snow.speedSpread
-            let flake = Snow.baseSize + rng.next() * Snow.sizeSpread
-            let drift = sin(t * Snow.driftPeriod + Double(i) * Snow.driftPhase) * Snow.driftAmplitude
+            let flake = (Snow.baseSize + rng.next() * Snow.sizeSpread) * scale
+            let drift = sin(t * Snow.driftPeriod + Double(i) * Snow.driftPhase) * Snow.driftAmplitude * scale
             let x = col * size.width + drift
             let travel = (t * speed + rng.next() * size.height).truncatingRemainder(
-                dividingBy: size.height + Snow.wrapPadding
+                dividingBy: size.height + Snow.wrapPadding * scale
             )
             let y = travel
             var flakeCtx = context
-            flakeCtx.opacity = Snow.opacity
+            flakeCtx.opacity = min(1, Snow.opacity * readability.particleOpacityScale)
             flakeCtx.fill(
                 Path(ellipseIn: CGRect(x: x, y: y, width: flake, height: flake)),
                 with: .color(.white)

@@ -35,3 +35,5 @@ Lab harness on production types is allowed (`failNextRefresh`, `markStaleForTest
 Lab chrome: one control per class. Clock: midnight and noon or a phase picker. Weather: live, kind, fail next.
 
 A Lab date in a doc is history. Retest if the behavior changed.
+
+Day film: CI stills at six hours prove `ImageRenderer` returns a frame. The full PNG and MP4 pass is opt in (`KEEP_DAY_FILM=1`, `Tools/export-day-film.sh`). Film frames use `SceneReadability.socialPreview`. That is not Lab proof of the desktop `NSWindow`.
