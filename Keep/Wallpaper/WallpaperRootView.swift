@@ -27,10 +27,11 @@ struct WallpaperRootView: View {
                 nextItem: session.effectiveNextItem,
                 now: clockDate,
                 phase: solar.phase,
+                weather: weather,
                 reduceMotion: reduceMotion
             )
-            .padding(.leading, 72)
-            .padding(.bottom, 88)
+            .padding(.leading, 80)
+            .padding(.bottom, 100)
             .padding(.trailing, 120)
         }
         .ignoresSafeArea()

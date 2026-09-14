@@ -24,7 +24,7 @@ struct MenuBarView: View {
                             .foregroundStyle(.orange)
                     }
                 }
-                TextField("", text: $intentionDraft, prompt: Text("One thing not to forget"))
+                TextField("", text: $intentionDraft, prompt: Text("Today’s Keep"))
                     .textFieldStyle(.roundedBorder)
                     .focused($intentionFocused)
                     .labelsHidden()

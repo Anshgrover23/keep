@@ -37,33 +37,33 @@ enum SkyAppearance {
             )
         case .morning:
             palette = SkyPalette(
-                top: Color(red: 0.42, green: 0.68, blue: 0.92),
-                mid: Color(red: 0.62, green: 0.82, blue: 0.96),
-                horizon: Color(red: 0.93, green: 0.95, blue: 0.98),
-                sun: Color(red: 1.0, green: 0.94, blue: 0.78),
-                glow: Color(red: 1.0, green: 0.90, blue: 0.70),
+                top: Color(red: 0.56, green: 0.78, blue: 0.94),
+                mid: Color(red: 0.82, green: 0.91, blue: 0.98),
+                horizon: Color(red: 0.97, green: 0.96, blue: 0.94),
+                sun: Color(red: 1.0, green: 0.96, blue: 0.82),
+                glow: Color(red: 1.0, green: 0.93, blue: 0.74),
                 starOpacity: 0,
-                haze: 0.12
+                haze: 0.10
             )
         case .noon:
             palette = SkyPalette(
-                top: Color(red: 0.22, green: 0.52, blue: 0.86),
-                mid: Color(red: 0.45, green: 0.72, blue: 0.94),
-                horizon: Color(red: 0.78, green: 0.88, blue: 0.96),
-                sun: Color(red: 1.0, green: 0.96, blue: 0.86),
-                glow: Color(red: 1.0, green: 0.95, blue: 0.82),
+                top: Color(red: 0.14, green: 0.40, blue: 0.80),
+                mid: Color(red: 0.36, green: 0.66, blue: 0.92),
+                horizon: Color(red: 0.70, green: 0.86, blue: 0.96),
+                sun: Color(red: 1.0, green: 0.97, blue: 0.88),
+                glow: Color(red: 1.0, green: 0.96, blue: 0.84),
                 starOpacity: 0,
-                haze: 0.22
+                haze: 0.26
             )
         case .afternoon:
             palette = SkyPalette(
-                top: Color(red: 0.28, green: 0.50, blue: 0.78),
-                mid: Color(red: 0.62, green: 0.70, blue: 0.82),
-                horizon: Color(red: 0.95, green: 0.84, blue: 0.62),
-                sun: Color(red: 1.0, green: 0.86, blue: 0.55),
-                glow: Color(red: 1.0, green: 0.72, blue: 0.38),
+                top: Color(red: 0.34, green: 0.48, blue: 0.68),
+                mid: Color(red: 0.78, green: 0.66, blue: 0.52),
+                horizon: Color(red: 0.98, green: 0.76, blue: 0.46),
+                sun: Color(red: 1.0, green: 0.80, blue: 0.44),
+                glow: Color(red: 1.0, green: 0.62, blue: 0.28),
                 starOpacity: 0,
-                haze: 0.16
+                haze: 0.18
             )
         case .dusk:
             palette = SkyPalette(
@@ -111,21 +111,28 @@ enum SkyAppearance {
 }
 
 extension DayPhase {
-    var textColor: Color {
-        switch self {
-        case .night, .dusk: Color(red: 0.93, green: 0.90, blue: 0.84)
-        case .dawn: Color(red: 1.0, green: 0.95, blue: 0.90)
-        case .morning, .noon, .afternoon: Color(red: 0.12, green: 0.14, blue: 0.18)
+    func overlayTextColor(weather: WeatherKind) -> Color {
+        if overlayPrefersLightInk(weather: weather) {
+            return TypeColor.light
         }
+        return TypeColor.dark
     }
 
-    var captionColor: Color {
-        textColor.opacity(TypeColor.captionOpacity)
+    func overlayCaptionColor(weather: WeatherKind) -> Color {
+        overlayTextColor(weather: weather).opacity(TypeColor.captionOpacity)
+    }
+
+    func overlayShadowOpacity(weather: WeatherKind) -> Double {
+        overlayPrefersLightInk(weather: weather) ? TypeColor.nightShadow : TypeColor.dayShadow
     }
 }
 
 private enum TypeColor {
     static let captionOpacity = 0.72
+    static let light = Color(red: 0.93, green: 0.90, blue: 0.84)
+    static let dark = Color(red: 0.12, green: 0.14, blue: 0.18)
+    static let dayShadow = 0.08
+    static let nightShadow = 0.40
 }
 
 private enum WeatherWash {

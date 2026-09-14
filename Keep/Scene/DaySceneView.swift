@@ -136,7 +136,7 @@ struct DaySceneView: View {
                 width: size.width + Metrics.bandExtraWidth,
                 height: weather == .fog ? Metrics.fogBandHeight : Metrics.cloudBandHeight
             )
-            band.fill(Path(roundedRect: rect, cornerRadius: Metrics.bandCornerRadius), with: .color(.white))
+            band.fill(Path(roundedRect: rect, cornerRadius: Metrics.bandCornerRadius), with: .color(palette.horizon))
         }
     }
 
@@ -162,12 +162,12 @@ private enum Metrics {
     static let twinklePhase = 0.6
     static let starRadiusMin = 0.6
     static let starRadiusSpread = 1.4
-    static let dayGlowRadius = 220.0
-    static let nightGlowRadius = 140.0
+    static let dayGlowRadius = 280.0
+    static let nightGlowRadius = 180.0
     static let diameterFactor: CGFloat = 2
-    static let skyGlowBlur: CGFloat = 48
-    static let skyGlowOpacity = 0.55
-    static let bodyGlowBlur: CGFloat = 18
+    static let skyGlowBlur: CGFloat = 64
+    static let skyGlowOpacity = 0.42
+    static let bodyGlowBlur: CGFloat = 28
     static let bodyGlowOpacity = 0.85
     static let bodyGlowInset: CGFloat = -12
     static let bodyGlowFillOpacity = 0.7
@@ -184,10 +184,10 @@ private enum Metrics {
     static let bandYStride = 0.12
     static let bandDriftSpeed = 0.03
     static let bandDriftAmplitude = 40.0
-    static let fogBandOpacity = 0.22
-    static let cloudBandOpacity = 0.14
-    static let fogBandBlur: CGFloat = 36
-    static let cloudBandBlur: CGFloat = 22
+    static let fogBandOpacity = 0.14
+    static let cloudBandOpacity = 0.08
+    static let fogBandBlur: CGFloat = 48
+    static let cloudBandBlur: CGFloat = 32
     static let bandXOffset: CGFloat = -80
     static let bandExtraWidth: CGFloat = 160
     static let fogBandHeight: CGFloat = 90
