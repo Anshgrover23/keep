@@ -36,7 +36,7 @@ No feature expansion unless they ask.
 
 ## Leave out until asked
 
-Custom video wallpaper, widgets, Screenpipe, contacts, streaks, iCloud, iOS companion, EventKitUI, WeatherKit, MapKit UI, launch at login, Sparkle, App Store listing, Hallmark on the Mac UI, SwiftData, CloudKit, TCA.
+Custom video wallpaper, widgets, Screenpipe, contacts, streaks, iCloud, iOS companion, EventKitUI, WeatherKit, MapKit UI, launch at login, Sparkle, App Store listing, Hallmark on the Mac UI, SwiftData, CloudKit, TCA. The day film PNG and MP4 export is a test, not a Keep extra. Film stills use social preview scale so sun, moon, and weather read in a small post box. The desktop wallpaper stays at wallpaper scale.
 
 ## Permissions
 

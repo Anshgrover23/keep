@@ -1,11 +1,26 @@
 import SwiftUI
 
+/// Wallpaper stays at 1. Social film scales bodies and weather so they read in a small preview box.
+enum SceneReadability {
+    case wallpaper
+    case socialPreview
+
+    var bodyScale: CGFloat { self == .socialPreview ? 2.7 : 1 }
+    var glowScale: CGFloat { self == .socialPreview ? 1.45 : 1 }
+    var particleScale: CGFloat { self == .socialPreview ? 3.2 : 1 }
+    var particleStrokeScale: CGFloat { self == .socialPreview ? 3.6 : 1 }
+    var particleOpacityScale: CGFloat { self == .socialPreview ? 1.35 : 1 }
+    var starScale: CGFloat { self == .socialPreview ? 2.2 : 1 }
+    var bandScale: CGFloat { self == .socialPreview ? 1.7 : 1 }
+}
+
 struct DaySceneView: View {
     var date: Date
     var solar: SolarContext
     var palette: SkyPalette
     var weather: WeatherKind
     var reduceMotion: Bool = false
+    var readability: SceneReadability = .wallpaper
 
     var body: some View {
         Canvas { context, size in
@@ -13,9 +28,21 @@ struct DaySceneView: View {
             drawStars(context: &context, size: size)
             drawGlow(context: &context, size: size)
             if solar.isDay {
-                drawBody(context: &context, size: size, progress: solar.sunProgress, radius: Metrics.sunRadius, isMoon: false)
+                drawBody(
+                    context: &context,
+                    size: size,
+                    progress: solar.sunProgress,
+                    radius: Metrics.sunRadius * readability.bodyScale,
+                    isMoon: false
+                )
             } else {
-                drawBody(context: &context, size: size, progress: solar.moonProgress, radius: Metrics.moonRadius, isMoon: true)
+                drawBody(
+                    context: &context,
+                    size: size,
+                    progress: solar.moonProgress,
+                    radius: Metrics.moonRadius * readability.bodyScale,
+                    isMoon: true
+                )
             }
             drawHorizonHaze(context: &context, size: size)
             drawCloudBands(context: &context, size: size)
@@ -24,7 +51,8 @@ struct DaySceneView: View {
                 size: size,
                 date: date,
                 weather: weather,
-                reduceMotion: reduceMotion
+                reduceMotion: reduceMotion,
+                readability: readability
             )
         }
         .allowsHitTesting(false)
@@ -53,7 +81,7 @@ struct DaySceneView: View {
             let twinkle = reduceMotion
                 ? 1.0
                 : Metrics.twinkleBase + Metrics.twinkleSpread * sin(t * Metrics.twinkleSpeed + Double(i) * Metrics.twinklePhase)
-            let radius = Metrics.starRadiusMin + rng.next() * Metrics.starRadiusSpread
+            let radius = (Metrics.starRadiusMin + rng.next() * Metrics.starRadiusSpread) * readability.starScale
             var star = context
             star.opacity = palette.starOpacity * twinkle
             star.fill(
@@ -65,7 +93,7 @@ struct DaySceneView: View {
 
     private func drawGlow(context: inout GraphicsContext, size: CGSize) {
         let body = bodyPoint(size: size, progress: solar.isDay ? solar.sunProgress : solar.moonProgress)
-        let glowRadius = solar.isDay ? Metrics.dayGlowRadius : Metrics.nightGlowRadius
+        let glowRadius = (solar.isDay ? Metrics.dayGlowRadius : Metrics.nightGlowRadius) * readability.glowScale
         let rect = CGRect(
             x: body.x - glowRadius,
             y: body.y - glowRadius,
@@ -134,7 +162,7 @@ struct DaySceneView: View {
                 x: Metrics.bandXOffset + drift,
                 y: y,
                 width: size.width + Metrics.bandExtraWidth,
-                height: weather == .fog ? Metrics.fogBandHeight : Metrics.cloudBandHeight
+                height: (weather == .fog ? Metrics.fogBandHeight : Metrics.cloudBandHeight) * readability.bandScale
             )
             band.fill(Path(roundedRect: rect, cornerRadius: Metrics.bandCornerRadius), with: .color(palette.horizon))
         }
