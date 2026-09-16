@@ -78,19 +78,31 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cat > /tmp/keep-release-notes.md <<EOF
-          Keep ${KEEP_VERSION} for macOS 14 on Apple Silicon.
+          Keep puts a living day on the Mac desktop: light, weather, and today’s Keep. A small extra stays in the menu bar.
 
-          Install after this draft is published:
+          ## In this release
+
+          * The sky follows the sun through the day.
+          * Turn on **Use local weather** if Keep should use your location for weather and daylight.
+          * The wallpaper shows at most two lines: the next Calendar event or a due reminder, and today’s Keep.
+          * Calendar and location are optional. Keep still runs if you leave them off.
+          * Turn off **Show Keep on the desktop** from the extra to bring the Mac picture back.
+          * Sleep and lock pause the sky. **Pause in fullscreen apps** and **Pause on Low Power Mode** are off unless you turn them on in Settings.
+
+          ## Requirements
+
+          * macOS 14 or later
+          * Apple Silicon
+
+          ## Install
 
           \`\`\`bash
           curl -fsSL https://raw.githubusercontent.com/Anshgrover23/keep/main/scripts/install.sh | bash
           \`\`\`
 
-          The DMG is attached here. The app is ad hoc signed. Apple did not notarize it. The install script copies Keep.app into Applications and clears quarantine.
-
-          This Release starts as a draft. The install script uses the latest published Release, so publish before sharing the curl line.
+          Or download \`Keep-${KEEP_VERSION}.dmg\` below.
           EOF
           gh release create "$KEEP_TAG" "Keep-${KEEP_VERSION}.dmg" \
             --draft \
-            --title "$KEEP_TAG" \
+            --title "Keep ${KEEP_VERSION}" \
             --notes-file /tmp/keep-release-notes.md
