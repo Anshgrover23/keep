@@ -17,14 +17,14 @@ Do not claim shippable because `xcodebuild test` passed.
 * `CODE_SIGN_IDENTITY = "-"` (ad hoc). No paid Apple Developer Program, so no Developer ID and no notarization.
 * `ENABLE_HARDENED_RUNTIME = YES`.
 * Sandbox in `Keep/Keep.entitlements`: network client, calendars, location, reminders.
-* CI: `macos-14`, switch to Xcode 16 (default on that image is 15.4, which cannot compile Swift 6), Debug `test`, Release `build`, `derivedDataPath`, no signing secrets.
-* Tag `v*.*.*` drafts a GitHub Release with an arm64 DMG and zip. `scripts/install.sh` downloads the zip (no `hdiutil` attach, which looks hung while checksumming).
+* CI: `macos-15`, switch to Xcode 26.3 (same SDK as a local Keep build: `macosx26.2`). Xcode 16 links the macOS 15 SDK and SwiftUI keeps the old chrome.
+* Tag `v*.*.*` drafts a GitHub Release with an arm64 zip only. `scripts/install.sh` downloads that zip.
 
 Do not add App Store, Sparkle, or login items unless asked. Do not put certificates in the repo.
 
 ## What v1 actually ships
 
-Unsigned (ad hoc) DMG on GitHub Releases plus a curl installer. The installer prefers `/Applications` when writable, else `~/Applications`, then `xattr -dr com.apple.quarantine`. That is not Gatekeeper approval. Safari downloaded DMGs still look damaged until quarantine is cleared.
+Unsigned (ad hoc) zip on GitHub Releases plus a curl installer. The installer prefers `/Applications` when writable, else `~/Applications`, then `xattr -dr com.apple.quarantine`. That is not Gatekeeper approval.
 
 When they enroll in the paid program, switch to Developer ID in CI. Until then, no signing secrets in GitHub Actions.
 
@@ -39,4 +39,4 @@ When they enroll in the paid program, switch to Developer ID in CI. Until then, 
 
 Apple docs win for `notarytool` flags. Previous stapled app is the rollback. Git `main` is not what users launch.
 
-If we have no dSYMs for that build, say so. Bump `CFBundleVersion` for a new notarized binary. Do not wipe intention in a settings migration.
+If we have no dSYMs for that build, say so. Bump `CFBundleVersion` for a new binary. Do not wipe intention in a settings migration.
