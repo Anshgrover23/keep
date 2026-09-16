@@ -17,7 +17,7 @@ Do not claim shippable because `xcodebuild test` passed.
 * `CODE_SIGN_IDENTITY = "-"` (ad hoc). No paid Apple Developer Program, so no Developer ID and no notarization.
 * `ENABLE_HARDENED_RUNTIME = YES`.
 * Sandbox in `Keep/Keep.entitlements`: network client, calendars, location, reminders.
-* CI: `macos-14`, Debug `test`, Release `build`, `derivedDataPath`, no signing secrets.
+* CI: `macos-14`, switch to Xcode 16 (default on that image is 15.4, which cannot compile Swift 6), Debug `test`, Release `build`, `derivedDataPath`, no signing secrets.
 * Tag `v*.*.*` drafts a GitHub Release with an arm64 DMG. `scripts/install.sh` installs after that draft is published.
 
 Do not add App Store, Sparkle, or login items unless asked. Do not put certificates in the repo.
