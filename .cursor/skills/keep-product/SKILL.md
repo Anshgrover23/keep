@@ -30,13 +30,13 @@ The user can change this. Update this file when they do.
 * Pause: lock and sleep freeze the sky. Fullscreen and Low Power Mode only if Settings opt in. Lab can still freeze without hiding.
 * Display link: preferred 60 fps, range 60 to 120, unless the user asks otherwise.
 * Weather from Open Meteo only for a measured GPS fix. Time zone fallback does not fetch a forecast for the equator. Extra does not show approximate, stale, or unavailable weather lines. Settings shows Status. Last `WeatherKind` kept on HTTP failure. No HTTP codes on product UI.
-* Overlay titles: regular serif, not ultralight.
+* Overlay titles: regular serif, not ultralight. Ink follows phase and weather so rain, storm, and fog stay readable. Extra field prompt matches the Today’s Keep label.
 
 No feature expansion unless they ask.
 
 ## Leave out until asked
 
-Custom video wallpaper, widgets, Screenpipe, contacts, streaks, iCloud, iOS companion, EventKitUI, WeatherKit, MapKit UI, launch at login, Sparkle, App Store listing, Hallmark on the Mac UI, SwiftData, CloudKit, TCA.
+Custom video wallpaper, widgets, Screenpipe, contacts, streaks, iCloud, iOS companion, EventKitUI, WeatherKit, MapKit UI, launch at login, Sparkle, App Store listing, Hallmark on the Mac UI, SwiftData, CloudKit, TCA. The day film PNG and MP4 export is a test, not a Keep extra. Film stills use social preview scale so sun, moon, and weather read in a small post box. The desktop wallpaper stays at wallpaper scale.
 
 ## Permissions
 

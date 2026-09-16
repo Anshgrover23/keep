@@ -3,6 +3,7 @@ import SwiftUI
 struct WallpaperRootView: View {
     @ObservedObject var session: AppSession
     @ObservedObject var clock: FrameClock
+    var sceneReadability: SceneReadability = .wallpaper
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -20,17 +21,19 @@ struct WallpaperRootView: View {
                 solar: solar,
                 palette: palette,
                 weather: weather,
-                reduceMotion: reduceMotion
+                reduceMotion: reduceMotion,
+                readability: sceneReadability
             )
             MemoryOverlay(
                 intention: session.intention.text,
                 nextItem: session.effectiveNextItem,
                 now: clockDate,
                 phase: solar.phase,
+                weather: weather,
                 reduceMotion: reduceMotion
             )
-            .padding(.leading, 72)
-            .padding(.bottom, 88)
+            .padding(.leading, 80)
+            .padding(.bottom, 100)
             .padding(.trailing, 120)
         }
         .ignoresSafeArea()
