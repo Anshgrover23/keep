@@ -4,6 +4,7 @@ struct WallpaperRootView: View {
     @ObservedObject var session: AppSession
     @ObservedObject var clock: FrameClock
     var sceneReadability: SceneReadability = .wallpaper
+    var showsMemoryOverlay: Bool = true
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -24,17 +25,19 @@ struct WallpaperRootView: View {
                 reduceMotion: reduceMotion,
                 readability: sceneReadability
             )
-            MemoryOverlay(
-                intention: session.intention.text,
-                nextItem: session.effectiveNextItem,
-                now: clockDate,
-                phase: solar.phase,
-                weather: weather,
-                reduceMotion: reduceMotion
-            )
-            .padding(.leading, 80)
-            .padding(.bottom, 100)
-            .padding(.trailing, 120)
+            if showsMemoryOverlay {
+                MemoryOverlay(
+                    intention: session.intention.text,
+                    nextItem: session.effectiveNextItem,
+                    now: clockDate,
+                    phase: solar.phase,
+                    weather: weather,
+                    reduceMotion: reduceMotion
+                )
+                .padding(.leading, 80)
+                .padding(.bottom, 100)
+                .padding(.trailing, 120)
+            }
         }
         .ignoresSafeArea()
         .accessibilityHidden(true)
