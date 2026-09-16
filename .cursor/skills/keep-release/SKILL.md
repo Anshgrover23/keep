@@ -18,7 +18,7 @@ Do not claim shippable because `xcodebuild test` passed.
 * `ENABLE_HARDENED_RUNTIME = YES`.
 * Sandbox in `Keep/Keep.entitlements`: network client, calendars, location, reminders.
 * CI: `macos-15`, switch to Xcode 26.3 (same SDK as a local Keep build: `macosx26.2`). Xcode 16 links the macOS 15 SDK and SwiftUI keeps the old chrome.
-* Tag `v*.*.*` drafts a GitHub Release with an arm64 zip only. `scripts/install.sh` downloads that zip.
+* Tag `v*.*.*` publishes a GitHub Release with an arm64 zip only. `scripts/install.sh` downloads that zip.
 
 Do not add App Store, Sparkle, or login items unless asked. Do not put certificates in the repo.
 

@@ -73,4 +73,4 @@ killall Keep 2>/dev/null; xcodebuild -project Keep.xcodeproj -scheme Keep -confi
 
 Old copy on screen means the wrong binary.
 
-CI: `.github/workflows/ci.yml`. `macos-15` with Xcode 26 selected so the linked SDK matches a local Xcode 26 Keep build. Debug `test`. Release `build`. Tag `v*.*.*` drafts a zip via `.github/workflows/release.yml`. Ad hoc only. No signing secrets.
+CI: `.github/workflows/ci.yml`. `macos-15` with Xcode 26 selected so the linked SDK matches a local Xcode 26 Keep build. Debug `test`. Release `build`. Tag `v*.*.*` publishes a zip via `.github/workflows/release.yml`. Ad hoc only. No signing secrets.

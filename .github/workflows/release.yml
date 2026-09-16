@@ -70,7 +70,7 @@ jobs:
           ditto -c -k --keepParent "$APP" "Keep-${KEEP_VERSION}.zip"
           ls -lh "Keep-${KEEP_VERSION}.zip"
 
-      - name: Draft GitHub Release
+      - name: GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -101,6 +101,5 @@ jobs:
           EOF
           gh release create "$KEEP_TAG" \
             "Keep-${KEEP_VERSION}.zip" \
-            --draft \
             --title "Keep ${KEEP_VERSION}" \
             --notes-file /tmp/keep-release-notes.md
