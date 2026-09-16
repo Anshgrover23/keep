@@ -116,7 +116,9 @@ final class EventKitCatalog: CalendarCataloging {
         let start = now.addingTimeInterval(-NextMemoryPolicy.inProgressLookback)
         let end = now.addingTimeInterval(NextMemoryPolicy.lookahead)
         let predicate = store.predicateForEvents(withStart: start, end: end, calendars: nil)
-        return store.events(matching: predicate).map(Self.occurrence(from:))
+        return store.events(matching: predicate).map { event in
+            Self.occurrence(from: event)
+        }
     }
 
     private func loadReminders(at now: Date) async -> ReminderLoad {
