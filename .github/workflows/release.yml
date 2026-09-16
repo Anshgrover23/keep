@@ -64,14 +64,15 @@ jobs:
             exit 1
           fi
 
-      - name: Package DMG
+      - name: Package DMG and zip
         run: |
           APP="build/DerivedData/Build/Products/Release/Keep.app"
           STAGE="$(mktemp -d)"
           ditto "$APP" "$STAGE/Keep.app"
           hdiutil create -volname Keep -srcfolder "$STAGE" -ov -format UDZO \
             "Keep-${KEEP_VERSION}.dmg"
-          ls -lh "Keep-${KEEP_VERSION}.dmg"
+          ditto -c -k --keepParent "$STAGE/Keep.app" "Keep-${KEEP_VERSION}.zip"
+          ls -lh "Keep-${KEEP_VERSION}.dmg" "Keep-${KEEP_VERSION}.zip"
 
       - name: Draft GitHub Release
         env:
@@ -102,7 +103,9 @@ jobs:
 
           Or download \`Keep-${KEEP_VERSION}.dmg\` below.
           EOF
-          gh release create "$KEEP_TAG" "Keep-${KEEP_VERSION}.dmg" \
+          gh release create "$KEEP_TAG" \
+            "Keep-${KEEP_VERSION}.dmg" \
+            "Keep-${KEEP_VERSION}.zip" \
             --draft \
             --title "Keep ${KEEP_VERSION}" \
             --notes-file /tmp/keep-release-notes.md

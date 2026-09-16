@@ -18,7 +18,7 @@ Do not claim shippable because `xcodebuild test` passed.
 * `ENABLE_HARDENED_RUNTIME = YES`.
 * Sandbox in `Keep/Keep.entitlements`: network client, calendars, location, reminders.
 * CI: `macos-14`, switch to Xcode 16 (default on that image is 15.4, which cannot compile Swift 6), Debug `test`, Release `build`, `derivedDataPath`, no signing secrets.
-* Tag `v*.*.*` drafts a GitHub Release with an arm64 DMG. `scripts/install.sh` installs after that draft is published.
+* Tag `v*.*.*` drafts a GitHub Release with an arm64 DMG and zip. `scripts/install.sh` downloads the zip (no `hdiutil` attach, which looks hung while checksumming).
 
 Do not add App Store, Sparkle, or login items unless asked. Do not put certificates in the repo.
 

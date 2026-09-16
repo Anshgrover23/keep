@@ -39,33 +39,35 @@ fi
 TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
+asset_url() {
+  local json="$1"
+  local ext="$2"
+  printf '%s' "$json" | sed -n "s/.*\"browser_download_url\": \"\\([^\"]*\\.${ext}\\)\".*/\\1/p" | head -1
+}
+
 if [[ -n "${KEEP_TAG:-}" ]]; then
   TAG="$KEEP_TAG"
   VER="${TAG#v}"
-  URL="https://github.com/${REPO}/releases/download/${TAG}/Keep-${VER}.dmg"
+  URL="https://github.com/${REPO}/releases/download/${TAG}/Keep-${VER}.zip"
 else
-  echo "Finding the latest published Keep release..."
-  API="https://api.github.com/repos/${REPO}/releases/latest"
-  JSON="$(curl -fsSL "$API")" || die "Could not read GitHub latest release. Publish the draft first."
-  URL="$(printf '%s' "$JSON" | sed -n 's/.*"browser_download_url": "\([^"]*\.dmg\)".*/\1/p' | head -1)"
-  [[ -n "$URL" ]] || die "Latest release has no DMG. Publish a draft that includes Keep-x.y.z.dmg."
+  echo "Finding the latest Keep release..."
+  JSON="$(curl -fsSL --retry 5 --connect-timeout 15 --max-time 30 \
+    "https://api.github.com/repos/${REPO}/releases/latest")" \
+    || die "Could not read GitHub latest release."
+  URL="$(asset_url "$JSON" zip)"
+  [[ -n "$URL" ]] || die "Latest release has no zip."
 fi
 
-DMG="$TMP/Keep.dmg"
-echo "Downloading $URL"
-curl -fL --progress-bar "$URL" -o "$DMG" || die "Download failed."
+ZIP="$TMP/Keep.zip"
+echo "Downloading Keep..."
+curl -fL --retry 5 --retry-delay 2 --connect-timeout 15 --max-time 180 \
+  --progress-bar -o "$ZIP" "$URL" \
+  || die "Download failed."
 
-MOUNT="$TMP/mnt"
-mkdir -p "$MOUNT"
-hdiutil attach -nobrowse -readonly -mountpoint "$MOUNT" "$DMG" >/dev/null \
-  || die "Could not mount the disk image."
-detach() {
-  hdiutil detach "$MOUNT" >/dev/null 2>&1 || true
-}
-trap 'detach; rm -rf "$TMP"' EXIT
-
-SRC="$MOUNT/$APP_NAME"
-[[ -d "$SRC" ]] || die "The disk image does not contain $APP_NAME."
+echo "Installing to $DEST..."
+ditto -x -k "$ZIP" "$TMP/unpacked" || die "Could not unpack Keep."
+SRC="$TMP/unpacked/$APP_NAME"
+[[ -d "$SRC" ]] || die "The archive does not contain $APP_NAME."
 
 TARGET="$DEST/$APP_NAME"
 if [[ -e "$TARGET" ]]; then
@@ -75,9 +77,6 @@ fi
 
 ditto "$SRC" "$TARGET" || die "Could not copy $APP_NAME to $DEST."
 xattr -dr com.apple.quarantine "$TARGET" 2>/dev/null || true
-
-detach
-trap 'rm -rf "$TMP"' EXIT
 
 echo "Installed $APP_NAME to $DEST."
 echo "Opening Keep..."
