@@ -42,6 +42,34 @@ struct WeatherKindTests {
         #expect(WeatherKind(wmoCode: 95) == .storm)
         #expect(WeatherKind(wmoCode: 45) == .fog)
     }
+
+    @Test func rainStormAndFogDarkenTheSky() {
+        #expect(WeatherKind.rain.darkensSky)
+        #expect(WeatherKind.storm.darkensSky)
+        #expect(WeatherKind.fog.darkensSky)
+        #expect(WeatherKind.clear.darkensSky == false)
+        #expect(WeatherKind.cloudy.darkensSky == false)
+        #expect(WeatherKind.snow.darkensSky == false)
+    }
+}
+
+struct OverlayInkTests {
+    @Test func noonClearUsesDarkInk() {
+        #expect(DayPhase.noon.overlayPrefersLightInk(weather: .clear) == false)
+        #expect(DayPhase.morning.overlayPrefersLightInk(weather: .cloudy) == false)
+    }
+
+    @Test func noonRainUsesLightInk() {
+        #expect(DayPhase.noon.overlayPrefersLightInk(weather: .rain))
+        #expect(DayPhase.afternoon.overlayPrefersLightInk(weather: .storm))
+        #expect(DayPhase.morning.overlayPrefersLightInk(weather: .fog))
+    }
+
+    @Test func nightAndDuskStayLight() {
+        #expect(DayPhase.night.overlayPrefersLightInk(weather: .clear))
+        #expect(DayPhase.dusk.overlayPrefersLightInk(weather: .clear))
+        #expect(DayPhase.dawn.overlayPrefersLightInk(weather: .clear))
+    }
 }
 
 struct MemoryItemTests {

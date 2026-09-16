@@ -7,6 +7,15 @@ enum DayPhase: String, CaseIterable, Sendable {
     case noon
     case afternoon
     case dusk
+
+    /// Light ink when the sky is dark: night bands, or a weather wash that greys the day.
+    func overlayPrefersLightInk(weather: WeatherKind) -> Bool {
+        if weather.darkensSky { return true }
+        switch self {
+        case .night, .dusk, .dawn: return true
+        case .morning, .noon, .afternoon: return false
+        }
+    }
 }
 
 enum WeatherKind: String, CaseIterable, Identifiable, Sendable {
@@ -17,6 +26,14 @@ enum WeatherKind: String, CaseIterable, Identifiable, Sendable {
     case rain
     case snow
     case storm
+
+    /// Rain, storm, and fog darken the wash. Overlay ink follows that, not phase alone.
+    var darkensSky: Bool {
+        switch self {
+        case .rain, .storm, .fog: return true
+        case .clear, .cloudy, .snow: return false
+        }
+    }
 
     init(wmoCode: Int) {
         switch wmoCode {
