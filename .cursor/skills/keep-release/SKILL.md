@@ -13,14 +13,22 @@ Do not claim shippable because `xcodebuild test` passed.
 ## Repo today
 
 * Bundle id `app.keep.desktop`.
-* `CODE_SIGN_IDENTITY = "-"` (ad hoc).
+* Semver in `CFBundleShortVersionString` and git tags (`v1.0.0`). `CFBundleVersion` is the integer build.
+* `CODE_SIGN_IDENTITY = "-"` (ad hoc). No paid Apple Developer Program, so no Developer ID and no notarization.
 * `ENABLE_HARDENED_RUNTIME = YES`.
 * Sandbox in `Keep/Keep.entitlements`: network client, calendars, location, reminders.
-* CI: `macos-15`, Debug `test`, Release `build`, `derivedDataPath`, no signing secrets.
+* CI: `macos-14`, Debug `test`, Release `build`, `derivedDataPath`, no signing secrets.
+* Tag `v*.*.*` drafts a GitHub Release with an arm64 DMG. `scripts/install.sh` installs after that draft is published.
 
 Do not add App Store, Sparkle, or login items unless asked. Do not put certificates in the repo.
 
-## When they ask to ship outside Xcode Run
+## What v1 actually ships
+
+Unsigned (ad hoc) DMG on GitHub Releases plus a curl installer. The installer prefers `/Applications` when writable, else `~/Applications`, then `xattr -dr com.apple.quarantine`. That is not Gatekeeper approval. Safari downloaded DMGs still look damaged until quarantine is cleared.
+
+When they enroll in the paid program, switch to Developer ID in CI. Until then, no signing secrets in GitHub Actions.
+
+## When they ask to ship with Developer ID
 
 1. Developer ID Application identity (not Apple Development, not `-`).
 2. Leave hardened runtime on.
@@ -32,5 +40,3 @@ Do not add App Store, Sparkle, or login items unless asked. Do not put certifica
 Apple docs win for `notarytool` flags. Previous stapled app is the rollback. Git `main` is not what users launch.
 
 If we have no dSYMs for that build, say so. Bump `CFBundleVersion` for a new notarized binary. Do not wipe intention in a settings migration.
-
-Until they ask to notarize in CI: no signing secrets in GitHub Actions. Release job compiles only.

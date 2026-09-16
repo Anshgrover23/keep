@@ -73,4 +73,4 @@ killall Keep 2>/dev/null; xcodebuild -project Keep.xcodeproj -scheme Keep -confi
 
 Old copy on screen means the wrong binary.
 
-CI: `.github/workflows/ci.yml`. `macos-15`. Debug `test`. Release `build`. No signing secrets until someone asks for `keep-release` in CI.
+CI: `.github/workflows/ci.yml`. `macos-14`. Debug `test`. Release `build`. Tag `v*.*.*` drafts a DMG via `.github/workflows/release.yml`. Ad hoc only. No signing secrets.
