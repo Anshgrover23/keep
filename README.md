@@ -19,8 +19,6 @@ Use Keep for mornings at the desk, long work blocks, a quiet day on Calendar, du
 
 ## Install
 
-There is no paid Apple Developer signing on this build. Apple did not notarize it. The installer copies Keep into Applications and clears quarantine so Finder can open it.
-
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Anshgrover23/keep/main/scripts/install.sh | bash
 ```
