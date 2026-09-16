@@ -10,6 +10,18 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+      - name: Select Xcode 16
+        run: |
+          for app in /Applications/Xcode_16.2.app /Applications/Xcode_16.1.app /Applications/Xcode_16.app; do
+            if [ -d "$app" ]; then
+              sudo xcode-select -s "$app/Contents/Developer"
+              xcodebuild -version
+              exit 0
+            fi
+          done
+          echo "Need Xcode 16 on this runner" >&2
+          ls /Applications/Xcode*.app
+          exit 1
       - name: Test
         run: xcodebuild -project Keep.xcodeproj -scheme Keep -configuration Debug -derivedDataPath build/DerivedData -destination 'platform=macOS' test
 
@@ -17,5 +29,17 @@ jobs:
     runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
+      - name: Select Xcode 16
+        run: |
+          for app in /Applications/Xcode_16.2.app /Applications/Xcode_16.1.app /Applications/Xcode_16.app; do
+            if [ -d "$app" ]; then
+              sudo xcode-select -s "$app/Contents/Developer"
+              xcodebuild -version
+              exit 0
+            fi
+          done
+          echo "Need Xcode 16 on this runner" >&2
+          ls /Applications/Xcode*.app
+          exit 1
       - name: Release build
         run: xcodebuild -project Keep.xcodeproj -scheme Keep -configuration Release -derivedDataPath build/DerivedData -destination 'platform=macOS' build
