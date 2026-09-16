@@ -28,7 +28,7 @@ Do not recreate that. Record the crash. Do not invent a second ban next to it.
 2. Apple docs, for API semantics.
 3. This repo’s code, for what Keep actually does.
 4. Keep skills, as short overlays.
-5. Public skills (Axiom, EventKit, menubar, SwiftUI, Hallmark, Firecrawl, Hyperframes, Vercel), consult only.
+5. Public skills, consult only. Launch video is Showreel (`Anshgrover23/product-demo-playbook`). Do not load HyperFrames for Keep.
 
 ## Load for the slice
 
@@ -42,11 +42,12 @@ Do not recreate that. Record the crash. Do not invent a second ban next to it.
 | VoiceOver, Reduce Motion, focus | `keep-accessibility` |
 | Tests and Lab matrix | `keep-testing` |
 | AppKit, EventKit, CoreLocation | `apple-macos`, then one specialist if the API is unfamiliar |
+| Launch / product demo video | `product-demo-playbook` only (Vouch, Colosseum, Excalidraw). Never HyperFrames. |
 
 Skip the rest.
 
 ## Do not pull in unless the user named it
 
-WeatherKit, EventKitUI, MapKit UI, WidgetKit, SwiftData, CloudKit, TCA, Alamofire, `AtmosphereEngine`, Liquid Glass wallpaper, SpriteKit `SKView`, `TimelineView` particles, Screenpipe, Hallmark on the Mac app, `SMAppService` launch at login, a new menu bar scaffold.
+WeatherKit, EventKitUI, MapKit UI, WidgetKit, SwiftData, CloudKit, TCA, Alamofire, `AtmosphereEngine`, Liquid Glass wallpaper, SpriteKit `SKView`, `TimelineView` particles, Screenpipe, Hallmark on the Mac app, `SMAppService` launch at login, a new menu bar scaffold, HyperFrames.
 
 Installing a skill is not adopting its default architecture.

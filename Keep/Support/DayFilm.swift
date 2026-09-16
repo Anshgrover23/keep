@@ -61,7 +61,12 @@ enum DayFilm {
         session.clockPinnedAt = Date()
         session.refreshSolar(at: Date())
         let clock = FrameClock()
-        let view = WallpaperRootView(session: session, clock: clock, sceneReadability: .socialPreview)
+        let view = WallpaperRootView(
+            session: session,
+            clock: clock,
+            sceneReadability: .socialPreview,
+            showsMemoryOverlay: false
+        )
             .frame(width: size.width, height: size.height)
         let renderer = ImageRenderer(content: view)
         renderer.proposedSize = ProposedViewSize(width: size.width, height: size.height)
