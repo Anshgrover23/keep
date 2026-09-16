@@ -1,6 +1,4 @@
 
-<h1 align="center">Keep</h1>
-
 <p align="center">
 	<img src="Keep/Assets.xcassets/AppIcon.appiconset/icon_256x256.png" width="96" height="96" alt="Keep">
 </p>
