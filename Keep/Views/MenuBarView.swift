@@ -139,25 +139,12 @@ struct MenuBarLabel: View {
     @ObservedObject var session: AppSession
 
     var body: some View {
-        Image(systemName: symbol)
-            .symbolRenderingMode(.monochrome)
+        Image("KeepMark")
+            .resizable()
+            .interpolation(.high)
+            .frame(width: 18, height: 18)
             .help(session.menuCaption)
-            .accessibilityLabel(session.menuCaption)
-    }
-
-    private var symbol: String {
-        switch session.effectiveWeather {
-        case .rain, .storm: "cloud.rain.fill"
-        case .snow: "cloud.snow.fill"
-        case .fog: "cloud.fog.fill"
-        case .cloudy: "cloud.sun.fill"
-        case .clear:
-            switch session.solar.phase {
-            case .night: "moon.stars.fill"
-            case .dawn, .dusk: "sun.horizon.fill"
-            default: "sun.max.fill"
-            }
-        }
+            .accessibilityLabel("Keep")
     }
 }
 

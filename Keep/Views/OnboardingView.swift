@@ -14,6 +14,11 @@ struct OnboardingView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 22) {
+            Image("KeepMark")
+                .resizable()
+                .interpolation(.high)
+                .frame(width: 56, height: 56)
+                .accessibilityHidden(true)
             Text("Keep")
                 .font(.system(size: 34, weight: .light, design: .serif))
             Text("Your wallpaper becomes a living day: light, weather, and today’s Keep.")
