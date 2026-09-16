@@ -12,7 +12,7 @@ Public Axiom, EventKit, menubar, SwiftUI, Hallmark, Firecrawl, Hyperframes, Scre
 
 ## Repo facts that used to be stale in this file
 
-* CI uses `derivedDataPath`. Debug `test` and Release `build` on `macos-15`.
+* CI uses `derivedDataPath`. Debug `test` and Release `build` on `macos-14`.
 * `KeepLog` and `OSSignposter` exist.
 * Settings have `keep.schemaVersion`.
 * Signing is still ad hoc. Notary is not claimed.

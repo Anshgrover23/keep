@@ -14,7 +14,20 @@ Use Keep for mornings at the desk, long work blocks, a quiet day on Calendar, du
 ## Requirements
 
 * macOS 14 and later
+* Apple Silicon
 * Xcode 16 and later (Swift 6, Swift Testing)
+
+## Install
+
+There is no paid Apple Developer signing on this build. Apple did not notarize it. The installer copies Keep into Applications and clears quarantine so Finder can open it.
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Anshgrover23/keep/main/scripts/install.sh | bash
+```
+
+Pin a tag with `curl -fsSL https://raw.githubusercontent.com/Anshgrover23/keep/main/scripts/install.sh | KEEP_TAG=v1.0.0 bash`. The script uses `/Applications` when you can write there, otherwise `~/Applications`.
+
+A GitHub Release DMG is attached on each `vX.Y.Z` tag. Releases start as drafts. Publish one before the curl line can see it.
 
 ## Build and run
 
