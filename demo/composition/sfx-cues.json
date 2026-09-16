@@ -1,0 +1,15 @@
+{
+  "comment": "Keep demo cues. Whooshes lead motion by ~20ms. One sound per story turn. hit is in-file peak offset.",
+  "sounds": {
+    "soft-whoosh": { "file": "../sfx/soft-whoosh.mp3", "hit": 0.3 },
+    "paper-tap": { "file": "../sfx/paper-tap.mp3", "hit": 0.02 },
+    "ui-tap": { "file": "../sfx/ui-tap.mp3", "hit": 0.02 },
+    "soft-pop": { "file": "../sfx/soft-pop.mp3", "hit": 0.03 },
+    "big-stamp": { "file": "../sfx/big-stamp.mp3", "hit": 0.02 }
+  },
+  "cues": [
+    { "t": 1.82, "sound": "soft-whoosh", "db": -14, "why": "frozen wallpaper rips" },
+    { "t": 2.0, "sound": "soft-pop", "db": -13, "why": "extra opens" },
+    { "t": 2.45, "sound": "ui-tap", "db": -13, "why": "field click" }
+  ]
+}

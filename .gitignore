@@ -16,5 +16,13 @@ build/
 # macOS
 .DS_Store
 
-# Screenshot tooling
-screenshots/.venv/
+# Screenshots
+screenshots/
+
+# Showreel: keep source, ignore what scripts can rebuild
+demo/out/
+demo/node_modules/
+demo/composition/dist/
+
+.agents/skills/product-demo/
+skills-lock.json

@@ -1,0 +1,22 @@
+{
+  "name": "@keep/demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "record": "node record.mjs",
+    "record:clean": "node record.mjs --no-captions",
+    "smoke": "node record.mjs --smoke",
+    "encode": "ffmpeg -y -framerate 60 -i out/frames/f%05d.png -vf scale=2560:1440:flags=lanczos -c:v libx264 -preset slow -crf 12 -pix_fmt yuv420p -movflags +faststart out/keep-demo-1440p60.mp4",
+    "encode:clean": "ffmpeg -y -framerate 60 -i out/frames-nocap/f%05d.png -vf scale=2560:1440:flags=lanczos -c:v libx264 -preset slow -crf 12 -pix_fmt yuv420p -movflags +faststart out/keep-demo-1440p60-nocaptions.mp4",
+    "mix": "node mix-audio.mjs --video out/keep-demo-1440p60-nocaptions.mp4"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "playwright": "^1.50.0"
+  }
+}
