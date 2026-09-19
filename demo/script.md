@@ -6,7 +6,7 @@ Rhythm grid: 0.6s = 100 BPM.
 One sentence a cold scroller can repeat: Keep puts today on your Mac
 desktop: the living sky, your next event, and one line you type.
 
-Hockey stick: frozen wallpaper (flat), type in the extra (turn),
+Hockey stick: smash the living day (open), type in the extra (turn),
 overlay on a day that turns (payoff). One shared guide: a large cursor
 from frame 0 to Keep. No drag. No grant cards. No wallpaper store.
 
@@ -17,33 +17,48 @@ tokens, extra chrome, and the living-day film.
 
 | # | Scene      | Secs | Starts | Claim |
 |---|------------|------|--------|-------|
-| 1 | DeadWall   | 2.0  | 0.0    | A Mac picture does not know today. |
-| 2 | TheExtra   | 5.0  | 2.0    | You type today’s line in Keep. Intro Call is already the next event. |
-| 3 | TheDay     | 11.0 | 7.0    | Intro Call and the line sit on the living day. The day turns. Keep. |
+| 1 | TheMark    | 5.6  | 0.0    | Smash. Pieces swing home: sky, overlay, dock, menu. K lands in the extra last. |
+| 2 | TheExtra   | 5.0  | 5.6    | Introducing Keep. You type today’s line. Intro Call is already the next event. |
+| 3 | TheDay     | 4.4  | 10.6   | Overlay sits. The day races. |
 
-Total: 18.0s. End cue = 18.0. Overlay lands at 6.6s, last extra out.
+Total: 15s. End cue = 15. Overlay lands at K land, extra out at 9.8. Day cycle is the last 5s.
 
 ## Voiceover (deadpan; timecodes are line START times)
 
-Mute-first captions. Voice is a later master.
+Mute-first captions. Paste the tag block into MiniMax or ElevenLabs. Do not paste the sync notes.
+
+KEEP, 18.0s DEMO, VOICEOVER SCRIPT
+(read deadpan; timecodes are line START times)
 
 ```
-[00:00.0]  Your wallpaper does not know today
-[00:02.0]  You type today’s line
-[00:06.6]  It sits on the desktop
-[00:12.0]  The day keeps moving
-[00:16.8]  Keep
+[00:02.7]  Introducing Keep
+[00:06.05] You type today’s line
+[00:09.8]  It sits on the desktop
+[00:11.5]  The day keeps moving
 ```
 
-Do not caption the typed line. Do not caption solar phases.
+Paste this only (Neutral on every chip; a period is a breath inside the line):
+
+```
+{neutral}Introducing Keep.{/neutral}<#2.8#>{neutral}You type . today’s line.{/neutral}<#2.2#>{neutral}It sits . on the desktop.{/neutral}<#1.4#>{neutral}The day . keeps moving.{/neutral}
+```
+
+Do not caption Introducing Keep. Do not caption the typed line. Do not caption solar phases.
 Do not caption Calendar, Reminders, or Location as nouns.
+
+Sync notes (never paste into the voice tool):
+Introducing Keep is spoken at 2.70 after the smash SFX. Do not caption it.
+You type today’s line starts at 6.05 with the field click. Do not speak “Ship the demo”.
+It sits on the desktop starts at extra out, 9.80.
+The day keeps moving covers the sped cycle. Do not speak Keep at the end.
+TTS will shrink the long pause tags. Cut on silences and place each line with retime-vo.mjs.
 
 ## Rhythm grid
 
 - Frozen Sequoia desktop 0.0 to 2.0. Still rips at 1.82.
 - Extra in at 2.0, top right, real menu extra chrome. Field click 2.45. Type from 2.45.
 - Overlay Intro Call is already on the desktop. The typed line appears on the wallpaper as it is typed.
-- Extra closes at 6.2. Caption Keep at 16.8. Hold to 18.0.
+- Extra closes at 6.2. Day cycle runs to 15.0. No closing Keep line.
 
 ## Fixture honesty
 
