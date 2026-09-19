@@ -31,6 +31,31 @@ struct DayFilmTests {
         #expect(kinds == Set(WeatherKind.allCases))
     }
 
+    @Test func glassCycleCivilDateMovesFromDawnTowardDusk() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = zone
+        var components = DateComponents()
+        components.year = 2026
+        components.month = 9
+        components.day = 11
+        let near = calendar.date(from: components)!
+        let observer = SolarObserver.geographic(latitude: 23, longitude: 82.5)
+        let dawn = GlassCycleFilm.civilDate(progress: 0, near: near, observer: observer)
+        let dusk = GlassCycleFilm.civilDate(progress: 1, near: near, observer: observer)
+        #expect(dusk > dawn)
+        #expect(SolarEngine.context(at: dawn, observer: observer).phase == .dawn)
+        #expect(SolarEngine.context(at: dusk, observer: observer).phase == .dusk)
+        let startSun = DaySceneView.bodyPoint(
+            size: GlassCycleFilm.canvas,
+            progress: SolarEngine.context(at: dawn, observer: observer).sunProgress
+        )
+        #expect(startSun.x >= GlassCycleFilm.startSunMinX)
+        let noon = GlassCycleFilm.civilDate(progress: 0.5, near: near, observer: observer)
+        let afternoon = GlassCycleFilm.civilDate(progress: 0.68, near: near, observer: observer)
+        #expect(SolarEngine.context(at: noon, observer: observer).phase == .noon)
+        #expect(SolarEngine.context(at: afternoon, observer: observer).phase == .afternoon)
+    }
+
     @Test func writesLaunchFilmWhenAsked() throws {
         // xcodebuild passes TEST_RUNNER_KEEP_DAY_FILM into the host as KEEP_DAY_FILM.
         guard ProcessInfo.processInfo.environment["KEEP_DAY_FILM"] == "1" else { return }
