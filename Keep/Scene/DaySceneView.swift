@@ -4,14 +4,38 @@ import SwiftUI
 enum SceneReadability {
     case wallpaper
     case socialPreview
+    /// Lab glass cycle: bigger, hotter sun so it reads through clear glass.
+    case glassCycle
 
-    var bodyScale: CGFloat { self == .socialPreview ? 2.7 : 1 }
-    var glowScale: CGFloat { self == .socialPreview ? 1.45 : 1 }
-    var particleScale: CGFloat { self == .socialPreview ? 3.2 : 1 }
-    var particleStrokeScale: CGFloat { self == .socialPreview ? 3.6 : 1 }
-    var particleOpacityScale: CGFloat { self == .socialPreview ? 1.35 : 1 }
-    var starScale: CGFloat { self == .socialPreview ? 2.2 : 1 }
-    var bandScale: CGFloat { self == .socialPreview ? 1.7 : 1 }
+    var bodyScale: CGFloat {
+        switch self {
+        case .wallpaper: 1
+        case .socialPreview: 2.7
+        case .glassCycle: 1.55
+        }
+    }
+
+    /// Wallpaper throws the noon sun high. Glass cycle keeps it passing along the pill.
+    var bodyYArc: CGFloat {
+        switch self {
+        case .glassCycle: 0.34
+        default: 0.48
+        }
+    }
+
+    var glowScale: CGFloat {
+        switch self {
+        case .wallpaper: 1
+        case .socialPreview: 1.45
+        case .glassCycle: 0.8
+        }
+    }
+
+    var particleScale: CGFloat { self == .wallpaper ? 1 : 3.2 }
+    var particleStrokeScale: CGFloat { self == .wallpaper ? 1 : 3.6 }
+    var particleOpacityScale: CGFloat { self == .wallpaper ? 1 : 1.35 }
+    var starScale: CGFloat { self == .wallpaper ? 1 : 2.2 }
+    var bandScale: CGFloat { self == .wallpaper ? 1 : 1.7 }
 }
 
 struct DaySceneView: View {
@@ -169,10 +193,18 @@ struct DaySceneView: View {
     }
 
     private func bodyPoint(size: CGSize, progress: Double) -> CGPoint {
+        Self.bodyPoint(size: size, progress: progress, readability: readability)
+    }
+
+    static func bodyPoint(
+        size: CGSize,
+        progress: Double,
+        readability: SceneReadability = .wallpaper
+    ) -> CGPoint {
         let clamped = min(Metrics.progressMax, max(Metrics.progressMin, progress))
         let x = size.width * (Metrics.bodyXStart + Metrics.bodyXSpan * clamped)
         let arc = sin(clamped * .pi)
-        let y = size.height * (Metrics.bodyYBase - Metrics.bodyYArc * arc)
+        let y = size.height * (Metrics.bodyYBase - readability.bodyYArc * arc)
         return CGPoint(x: x, y: y)
     }
 }
@@ -226,5 +258,4 @@ private enum Metrics {
     static let bodyXStart = 0.12
     static let bodyXSpan = 0.76
     static let bodyYBase = 0.72
-    static let bodyYArc = 0.48
 }
