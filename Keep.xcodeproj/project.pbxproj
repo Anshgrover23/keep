@@ -29,6 +29,8 @@
 		A100000000000015 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000017 /* AppSettings.swift */; };
 		A100000000000018 /* FrameClock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000018 /* FrameClock.swift */; };
 		A100000000000026 /* DayFilm.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000026 /* DayFilm.swift */; };
+		A100000000000027 /* GlassCycleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000027 /* GlassCycleView.swift */; };
+		A100000000000028 /* GlassCycleWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000028 /* GlassCycleWindow.swift */; };
 		A100000000000019 /* MemoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B100000000000019 /* MemoryItem.swift */; };
 		A10000000000001A /* SessionBoundaries.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000001A /* SessionBoundaries.swift */; };
 		A10000000000001C /* SkyAppearance.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000001C /* SkyAppearance.swift */; };
@@ -78,6 +80,8 @@
 		B100000000000017 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
 		B100000000000018 /* FrameClock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameClock.swift; sourceTree = "<group>"; };
 		B100000000000026 /* DayFilm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayFilm.swift; sourceTree = "<group>"; };
+		B100000000000027 /* GlassCycleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCycleView.swift; sourceTree = "<group>"; };
+		B100000000000028 /* GlassCycleWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlassCycleWindow.swift; sourceTree = "<group>"; };
 		B100000000000019 /* MemoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemoryItem.swift; sourceTree = "<group>"; };
 		B10000000000001A /* SessionBoundaries.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionBoundaries.swift; sourceTree = "<group>"; };
 		B10000000000001C /* SkyAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkyAppearance.swift; sourceTree = "<group>"; };
@@ -196,6 +200,7 @@
 				B10000000000000F /* OnboardingView.swift */,
 				B100000000000010 /* SettingsView.swift */,
 				B100000000000014 /* LabView.swift */,
+				B100000000000027 /* GlassCycleView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -208,6 +213,7 @@
 				B100000000000017 /* AppSettings.swift */,
 				B100000000000018 /* FrameClock.swift */,
 				B100000000000026 /* DayFilm.swift */,
+				B100000000000028 /* GlassCycleWindow.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -381,6 +387,8 @@
 				A100000000000015 /* AppSettings.swift in Sources */,
 				A100000000000018 /* FrameClock.swift in Sources */,
 				A100000000000026 /* DayFilm.swift in Sources */,
+				A100000000000027 /* GlassCycleView.swift in Sources */,
+				A100000000000028 /* GlassCycleWindow.swift in Sources */,
 				A100000000000019 /* MemoryItem.swift in Sources */,
 				A10000000000001A /* SessionBoundaries.swift in Sources */,
 				A10000000000001C /* SkyAppearance.swift in Sources */,
