@@ -147,6 +147,17 @@ struct LabView: View {
                 }
                 Spacer(minLength: 0)
             }
+            HStack(spacing: 8) {
+                Button("Play glass cycle") {
+                    GlassCycleWindow.presentLive(session: session)
+                }
+                Button("Record glass cycle") {
+                    Task {
+                        await GlassCycleWindow.record(session: session, thenQuit: false)
+                    }
+                }
+                Spacer(minLength: 0)
+            }
             labButton("Force weather refresh") {
                 Task {
                     await session.weather.refresh(

@@ -30,6 +30,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        if ProcessInfo.processInfo.environment["KEEP_GLASS_CYCLE"] == "1" {
+            NSApp.setActivationPolicy(.regular)
+            session.start()
+            Task {
+                await GlassCycleWindow.record(session: session, thenQuit: true)
+            }
+            return
+        }
         session.start()
         NSApp.setActivationPolicy(.accessory)
         if session.needsOnboarding {
