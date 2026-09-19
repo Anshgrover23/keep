@@ -11,7 +11,7 @@
   @font-face { font-family: "Inter"; src: url("../assets/fonts/Inter-Medium.otf") format("opentype"); font-weight: 500; }
   @font-face { font-family: "Inter"; src: url("../assets/fonts/Inter-SemiBold.otf") format("opentype"); font-weight: 600; }
   @font-face { font-family: "Inter"; src: url("../assets/fonts/Inter-Bold.otf") format("opentype"); font-weight: 700; }
-  html, body { margin: 0; background: #eef3f8; }
+  html, body { margin: 0; background: #ffffff; }
   #stage { width: 1280px; height: 720px; position: relative; overflow: hidden; }
   #transport { display: flex; gap: 12px; align-items: center; padding: 10px 14px; color: #1c2430; font: 13px system-ui; }
   #transport button { font: 13px system-ui; padding: 4px 14px; }
@@ -24,8 +24,11 @@
   <button id="play">play / pause</button>
   <input id="scrub" type="range" min="0" max="54" step="0.0167" value="0" />
   <span id="timelabel">0.00s</span>
+  <button type="button" id="burst-reset">reset layout</button>
+  <button type="button" id="burst-copy">copy layout</button>
+  <span>Drag any piece on the canvas. It saves as you go.</span>
 </div>
 <script src="./sound.js"></script>
-<script src="./dist/main.js"></script>
+<script src="./dist/main.js?v=burst41"></script>
 </body>
 </html>

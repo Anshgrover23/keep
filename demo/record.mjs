@@ -36,7 +36,7 @@ const srv = createServer((req, res) => {
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: SCALE });
-await page.addInitScript(() => { window.__NO_PREVIEW_SOUND = true; });
+await page.addInitScript(() => { window.__NO_PREVIEW_SOUND = true; window.__NO_BURST_EDIT = true; });
 if (NOCAP) await page.addInitScript(() => { window.__NO_CAPTIONS = true; });
 page.on("pageerror", (e) => console.error("[js]", String(e).slice(0, 400)));
 page.on("console", (m) => { if (m.type() === "error") console.error("[console]", m.text().slice(0, 300)); });
@@ -48,9 +48,9 @@ await page.waitForTimeout(2500);
 const stage = await page.$("#stage");
 const duration = Number(await stage.getAttribute("data-om-exportable-video-with-duration-secs"));
 const SMOKE_TIMES = [
-  0.05, 0.9, 1.7,
-  2.2, 3.4, 4.8, 6.3,
-  7.0, 9.0, 12.0, 14.2, 16.2, 17.5,
+  0.02, 0.45, 1.0, 1.6, 2.2, 2.8,
+  3.4, 4.2, 5.1, 5.8,
+  6.4, 8.2, 10.0, 14.2, 16.8, 20.0, 21.2,
 ];
 const frames = SMOKE ? SMOKE_TIMES.length - 1 : Math.round(duration * FPS);
 console.log(`duration=${duration}s frames=${frames} fps=${FPS} scale=${SCALE}x captions=${!NOCAP}`);

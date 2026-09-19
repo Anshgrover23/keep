@@ -61,7 +61,7 @@ function Speaker({ color }) {
   );
 }
 
-export function MacMenuBar({ app = "Finder", phase = "morning", extraOpen = false }) {
+export function MacMenuBar({ app = "Finder", phase = "morning", extraOpen = false, keepMark = true }) {
   const ink = "rgba(255,255,255,0.96)";
   const menus = app === "Keep"
     ? ["Keep", "Edit", "View", "Window", "Help"]
@@ -106,14 +106,18 @@ export function MacMenuBar({ app = "Finder", phase = "morning", extraOpen = fals
             flexShrink: 0,
           }}
         >
-          <img
-            src="../assets/macos/icons/keep.png"
-            alt=""
-            width={22}
-            height={22}
-            draggable={false}
-            style={{ display: "block", width: 22, height: 22, objectFit: "contain" }}
-          />
+          {keepMark ? (
+            <img
+              src="../assets/macos/icons/keep.png"
+              alt=""
+              width={22}
+              height={22}
+              draggable={false}
+              style={{ display: "block", width: 22, height: 22, objectFit: "contain" }}
+            />
+          ) : (
+            <span style={{ width: 22, height: 22 }} />
+          )}
         </span>
         <Speaker color={ink} />
         <Battery color={ink} />
@@ -163,8 +167,8 @@ function DockIcon({ src, open }) {
 export function MacDock({ night = false, keepOpen = false }) {
   const I = "../assets/macos/icons";
   const apps = [
-    "finder", "keep", "messages", "mail", "maps", "photos", "facetime",
-    "contacts", "calendar", "reminders", "notes", "appstore", "settings", "safari",
+    "finder", "messages", "mail", "maps", "photos", "facetime",
+    "contacts", "calendar", "reminders", "notes", "appstore", "settings", "safari", "keep",
   ];
   const rim = night
     ? "inset 0 1.5px 0 0 rgba(255,255,255,0.08), inset 0 0 0 1.5px rgba(128,128,128,0.22), 0 18px 44px -12px rgba(0,0,0,0.45)"

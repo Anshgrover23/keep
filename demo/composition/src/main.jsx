@@ -11,7 +11,7 @@ stageEl.setAttribute("data-om-exportable-video-with-duration-secs", String(DURAT
 let setTimeExternal = null;
 
 function Root() {
-  const [T, setT] = useState(0);
+  const [T, setT] = useState(window.__NO_BURST_EDIT ? 0 : 1.65);
   useEffect(() => {
     setTimeExternal = (time, sync) => {
       const t = Math.max(0, Math.min(time, DURATION - 1e-4));
@@ -27,7 +27,7 @@ function Root() {
     window.__T = T;
   }, [T]);
   return (
-    <div style={{ position: "relative", width: 1280, height: 720, overflow: "hidden", pointerEvents: "none" }}>
+    <div style={{ position: "relative", width: 1280, height: 720, overflow: "hidden", pointerEvents: window.__NO_BURST_EDIT ? "none" : "auto" }}>
       <Demo T={T} />
       <CaptionStamp T={T} text={captionAt(T)} />
     </div>
@@ -40,7 +40,7 @@ const bar = document.getElementById("transport");
 if (bar) {
   let playing = false;
   let last = 0;
-  let cur = 0;
+  let cur = window.__NO_BURST_EDIT ? 0 : 1.65;
   const scrub = document.getElementById("scrub");
   const label = document.getElementById("timelabel");
   scrub.max = String(DURATION);
@@ -56,6 +56,10 @@ if (bar) {
     requestAnimationFrame(step);
   };
   requestAnimationFrame(step);
+  if (!window.__NO_BURST_EDIT) {
+    scrub.value = "1.65";
+    label.textContent = "1.65s";
+  }
   document.getElementById("play").onclick = () => {
     if (cur >= DURATION - 0.05) cur = 0;
     playing = !playing;
