@@ -43,8 +43,9 @@ Do not recreate that. Record the crash. Do not invent a second ban next to it.
 | Tests and Lab matrix | `keep-testing` |
 | AppKit, EventKit, CoreLocation | `apple-macos`, then one specialist if the API is unfamiliar |
 | Launch / product demo video | `product-demo-playbook` only (Vouch, Colosseum, Excalidraw). Never HyperFrames. |
+| X posts, build in public, Liquid Glass essays | `original-content` plus at most one source skill from that table |
 
-Skip the rest.
+Skip the rest. Do not load all original-content source skills in one turn.
 
 ## Do not pull in unless the user named it
 
