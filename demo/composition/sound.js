@@ -25,7 +25,15 @@
           const src = ctx.createBufferSource();
           src.buffer = buf;
           const g = ctx.createGain();
-          g.gain.value = Math.pow(10, (c.db ?? -12) / 20);
+          const level = Math.pow(10, (c.db ?? -12) / 20);
+          const now = ctx.currentTime;
+          g.gain.setValueAtTime(level, now);
+          if (c.fadeOut != null) {
+            const fo = Number(c.fadeOut);
+            const fd = Number(c.fadeOutDur ?? 0.4);
+            g.gain.setValueAtTime(level, now + fo);
+            g.gain.linearRampToValueAtTime(0.0001, now + fo + fd);
+          }
           src.connect(g).connect(ctx.destination);
           src.start(0, Math.max(0, hit - 0.06));
         }

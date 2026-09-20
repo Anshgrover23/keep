@@ -160,10 +160,10 @@ export function PathCursor({ T, path, until, ibeam = false }) {
 }
 
 export function StoryGuide({ T, path, kind = "arrow", night = false }) {
-  const pos = cursorAt(T, path) || { x: path[0].x, y: path[0].y };
+  const pos = cursorAt(T, path);
+  if (!pos) return null;
   let press = 1;
   for (const w of path) if (w.press) press = Math.min(press, MOTION.press(T, w.t, 0.14));
-  const trail = kind === "ibeam" ? [] : [0.028, 0.055].map((lag, i) => ({ pos: cursorAt(T - lag, path), opacity: 0.2 - i * 0.08 }));
   return (
     <div style={{ ...ABS, inset: 0, zIndex: 72, pointerEvents: "none" }}>
       {path.map((w, i) => {
@@ -189,14 +189,7 @@ export function StoryGuide({ T, path, kind = "arrow", night = false }) {
           />
         );
       })}
-      {kind === "ibeam"
-        ? <IBeam x={pos.x} y={pos.y} />
-        : (
-          <>
-            {trail.map((g, i) => g.pos ? <Cursor key={i} x={g.pos.x} y={g.pos.y} pressScale={1} opacity={g.opacity} /> : null)}
-            <Cursor x={pos.x} y={pos.y} pressScale={press} />
-          </>
-        )}
+      {kind === "ibeam" ? <IBeam x={pos.x} y={pos.y} /> : <Cursor x={pos.x} y={pos.y} pressScale={press} />}
     </div>
   );
 }

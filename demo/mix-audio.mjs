@@ -47,8 +47,12 @@ for (const cue of spec.cues) {
   const startAt = cue.t - (snd.hit ?? 0);
   const gain = (makeup[cue.sound] + (cue.db ?? -12)).toFixed(1);
   const pre = startAt < 0 ? `atrim=${(-startAt).toFixed(3)},` : '';
+  const ss = snd.ss != null ? `atrim=${Number(snd.ss).toFixed(3)}:${(Number(snd.ss) + Number(snd.dur ?? 99)).toFixed(3)},asetpts=PTS-STARTPTS,` : (snd.dur != null ? `atrim=0:${Number(snd.dur).toFixed(3)},` : '');
+  const fadeOut = cue.fadeOut != null
+    ? `,afade=t=out:st=${Number(cue.fadeOut).toFixed(3)}:d=${Number(cue.fadeOutDur ?? 0.4).toFixed(3)}`
+    : '';
   const ms = Math.round(Math.max(0, startAt) * 1000);
-  chains.push(`[${idx}]${pre}adelay=${ms}|${ms},volume=${gain}dB[s${idx}]`);
+  chains.push(`[${idx}]${ss}${pre}adelay=${ms}|${ms},volume=${gain}dB${fadeOut}[s${idx}]`);
   mixIns.push(`[s${idx}]`);
   idx++;
 }
